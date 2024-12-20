@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@ui/dropdown-menu';
+} from '@components/dropdown-menu';
 
 function ThemeToggler() {
   const { setTheme } = useTheme();
@@ -20,7 +20,7 @@ function ThemeToggler() {
         <Button
           variant='outline'
           size={null}
-          className='bg-slate-700 hover:bg-slate-600 border-0 mr-5 p-2'
+          className='bg-[#e6e6e6] dark:bg-[#333333] hover:bg-[#333333] dark:hover:bg-[#e6e6e6] hover:text-white dark:hover:text-black border-0 mr-5 p-2'
         >
           <Sun className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0' />
           <Moon className='absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100' />
@@ -34,7 +34,7 @@ function ThemeToggler() {
         <DropdownMenuItem onClick={() => setTheme('dark')}>
           Dark
         </DropdownMenuItem>
-         <DropdownMenuItem onClick={() => setTheme('system')}>
+        <DropdownMenuItem onClick={() => setTheme('system')}>
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

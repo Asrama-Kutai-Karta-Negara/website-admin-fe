@@ -1,12 +1,11 @@
 import type { Config } from "tailwindcss";
 
 export default {
+  darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./src/**/*.{ts,tsx}",
   ],
+  prefix: "",
   theme: {
     container: {
       center: true,
@@ -46,6 +45,21 @@ export default {
           DEFAULT: "var(--popover)",
           foreground: "var(--popover-foreground)",
         },
+        gold: {
+          DEFAULT: "var(--gold)",
+        },
+        green: {
+          DEFAULT: "var(--green)",
+        },
+        yellow: {
+          DEFAULT: "var(--yellow)",
+        },
+        honey: {
+          DEFAULT: "var(--honey)",
+        },
+        blonde: {
+          DEFAULT: "var(--blonde)",
+        },
         card: {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
@@ -72,5 +86,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 } satisfies Config;
