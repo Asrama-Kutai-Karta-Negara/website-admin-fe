@@ -8,7 +8,7 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@components/particel/toast/toast"
+} from "@components/particel/toast"
 import { useToast } from "@interfaces/use-toast"
 
 export function Toaster() {

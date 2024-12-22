@@ -55,12 +55,8 @@ const RightNavBar = () => {
           text={`${formattedTime} WIB`} 
           textSize={'sm'} 
           textWeight={'semibold'} 
-          textColor={'gold'} 
-          background={'blonde'} 
-          borderSize={'1.5px'}
-          borderColor={'yellow'}
           outline={true} 
-          classNameText={'px-2 py-1 rounded'}
+          classNameText={'px-2 py-1 rounded text-gold bg-blonde border-yellow border-[1.5px]'}
         />
         <Bell className='h-4 w-4 dark:text-blonde dark:fill-blonde text-[#CCBB22]' fill='#CCBB22'/>
         <ThemeToggler />
@@ -76,12 +72,8 @@ const RightNavBar = () => {
           text={'Online'} 
           textSize={'xs'} 
           textWeight={'semibold'} 
-          textColor={'green'} 
-          background={'background'} 
-          borderSize={'0.5px'}
-          borderColor={'green'}
           outline={true} 
-          classNameText={'px-2 py-1 rounded'}
+          classNameText={'px-2 py-1 rounded text-green bg-background border-green border-[0.5px]'}
         />
         <DropdownMenu>
             <DropdownMenuTrigger className='focus:outline-none'>
