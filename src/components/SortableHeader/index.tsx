@@ -33,7 +33,7 @@ export function SortableHeader<TData, TValue>({
             variant="ghost"
             size="sm"
             className={cn(
-              "-ml-3 h-full data-[state=open]:bg-primary/10 uppercase text-xs",
+              "-ml-3 h-full data-[state=open]:bg-primary/10 text-[14px]",
               column.getIsSorted() && "bg-primary/10"
             )}
           >

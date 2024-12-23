@@ -65,7 +65,7 @@ export default {
         input: "var(--input)",
         ring: "var(--ring)",
         table: {
-          headerBackground: "#d30000",
+          headerBackground: "var(--background)",
         },
       },
       borderRadius: {
@@ -89,5 +89,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+  ],
 } satisfies Config;

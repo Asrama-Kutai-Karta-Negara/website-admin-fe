@@ -38,5 +38,5 @@ export interface ProjectActionsProps<TData> {
 export type DynamicCardProps = {
   header?: React.ReactNode;
   body?: React.ReactNode;
-  image?: string;
+  border?: boolean;
 }

@@ -1,18 +1,18 @@
 import React from "react";
 import { DynamicCardProps } from "@interfaces/interface-items";
 
-const DynamicCard: React.FC<DynamicCardProps> = ({ header, body }) => {
+const DynamicCard: React.FC<DynamicCardProps> = ({ border = false, header, body }) => {
   return (
-    <div className="flex mt-4">
+    <div className="flex mt-4 h-screen">
       <div
-        className="w-full max-w-screen md:max-w-md lg:max-w-lg xl:max-w-2xl p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+        className="w-full md:max-w-md lg:max-w-lg xl:max-w-4xl overflow-auto bg-primary text-foreground rounded-lg shadow-md hover:shadow-lg transition-all duration-300 scrollbar-thin"
       >
         {header && (
-          <div className="border-b">
+          <div className={`${border ? "border-b" : ""}`}>
             {header}
           </div>
         )}
-        {body}
+        <div>{body}</div>
       </div>
     </div>
   );

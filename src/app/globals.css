@@ -58,7 +58,7 @@
     --secondary-foreground: #f8fafc;
 
     --muted: #1e293b;
-    --muted-foreground: #94a3b8;
+    --muted-foreground: #ffffff;
 
     --accent: #1e293b;
     --accent-foreground: #f8fafc;
@@ -88,6 +88,21 @@
 }
 
 @layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) var(--blonde);
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--honey);
+    border-radius: 10px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background-color: var(--blonde);
+  }
   .table-auto {
     table-layout: auto;
   }
