@@ -16,9 +16,6 @@ export default {
     },
     extend: {
       colors: {
-        border: "var(--border)",
-        input: "var(--input)",
-        ring: "var(--ring)",
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: {
@@ -63,6 +60,12 @@ export default {
         card: {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
+        },
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
+        table: {
+          headerBackground: "#d30000",
         },
       },
       borderRadius: {

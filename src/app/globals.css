@@ -86,3 +86,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .table-auto {
+    table-layout: auto;
+  }
+}

@@ -1,4 +1,4 @@
-import { Gallery } from '@interfaces/interface-items';
+import { IItem } from '@interfaces/interface-items';
 import { 
     LayoutDashboard, 
     Images, 
@@ -7,9 +7,6 @@ import {
     ChartColumnDecreasing,
     FileText
 } from 'lucide-react';
-import { Tooltip } from '@nextui-org/react'
-
-import { DeleteIcon, EditIcon, EyeIcon } from '@assets/icons/icons';
 
 const menuItems: Array<{
   label: string;
@@ -62,51 +59,58 @@ const profileItems: Array<{
   }
 ];
 
-// const columnsGallery = [
-//   {
-//     key: 'name',
-//     label: 'NAME'
-//   },
-//   {
-//     key: 'lastSeen',
-//     label: 'Last Seen'
-//   },
-//   {
-//     key: 'actions',
-//     label: 'Actions'
-//   }
-// ]
+const columnsGallery = [
+  {
+    key: 'name',
+    label: 'NAME'
+  },
+  {
+    key: 'lastSeen',
+    label: 'Last Seen'
+  },
+  {
+    key: 'actions',
+    label: 'Actions'
+  }
+]
 
-// const renderCell = (gallery: Gallery, columnKey: React.Key) => {
-//   const cellValue = gallery[columnKey as keyof Gallery]
+const items: IItem[] = [
+  {
+    index: 0,
+    label: "All",
+    value: "all",
+    number: 27,
+  },
+  {
+    index: 1,
+    label: "Risk",
+    value: "risk",
+    number: 4,
+  },
+  {
+    index: 2,
+    label: "On Hold",
+    value: "onHold",
+    number: 6,
+  },
+  {
+    index: 3,
+    label: "Potential Risk",
+    value: "potentialRisk",
+    number: 7,
+  },
+  {
+    index: 4,
+    label: "On Track",
+    value: "onTrack",
+    number: 12,
+  },
+  {
+    index: 5,
+    label: "Archived",
+    value: "archived",
+    number: 9,
+  },
+];
 
-//   switch (columnKey) {
-    
-//     case 'lastSeen':
-//       return <span>{new Date(cellValue).toLocaleDateString()}</span>
-//     case 'actions':
-//       return (
-//         <div className='relative flex items-center gap-4'>
-//           <Tooltip content='Details'>
-//             <span className='cursor-pointer text-lg text-default-400 active:opacity-50'>
-//               <EyeIcon />
-//             </span>
-//           </Tooltip>
-//           <Tooltip content='Edit user'>
-//             <span className='cursor-pointer text-lg text-default-400 active:opacity-50'>
-//               <EditIcon />
-//             </span>
-//           </Tooltip>
-//           <Tooltip color='danger' content='Delete user'>
-//             <span className='cursor-pointer text-lg text-danger active:opacity-50'>
-//               <DeleteIcon />
-//             </span>
-//           </Tooltip>
-//         </div>
-//       )
-//     default:
-//       return cellValue
-//   }
-// }
-
-export { menuItems, profileItems, columnsGallery, renderCell };
+export { menuItems, profileItems, columnsGallery, items };

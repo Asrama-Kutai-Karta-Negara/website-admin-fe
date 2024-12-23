@@ -3,8 +3,6 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 const Breadcumbs = ({ title, breadCrumbs }: BreadCrumbsProps) => {
-    
-    console.log(breadCrumbs);
     return (
         <>
             <section className="py-1 sm:py-2">
