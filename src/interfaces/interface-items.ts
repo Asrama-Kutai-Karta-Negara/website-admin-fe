@@ -33,3 +33,10 @@ export interface IItem {
 export interface ProjectActionsProps<TData> {
   row: Row<TData>;
 }
+
+
+export type DynamicCardProps = {
+  header?: React.ReactNode;
+  body?: React.ReactNode;
+  image?: string;
+}

@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 const Sidebar = () => {
   return (
-    <Command className="bg-primary rounded-none py-2 px-6">
+    <Command className="bg-primary rounded-none py-2 px-6 h-full">
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
           {menuItems.map((item, index) => (
