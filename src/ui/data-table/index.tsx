@@ -19,12 +19,11 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import TableHeader from "./table-header";
-import { TableFooter } from "./table-footer";
-import { TablePagination } from "./table-pagination";
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  footer,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -48,10 +47,6 @@ export function DataTable<TData, TValue>({
       },
     },
   });
-
-  console.log("sorting", table.getState().sorting);
-  console.log("pagination", table.getState().pagination);
-  console.log("data", table);
 
   return (
     <div className="flex flex-col">
@@ -89,7 +84,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <TableFooter table={table} />
+      {footer}
     </div>
   );
 }

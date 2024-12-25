@@ -7,6 +7,7 @@ export interface BreadCrumb  {
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  footer: React.ReactNode;
 }
 
 export interface BreadCrumbsProps {
@@ -15,12 +16,15 @@ export interface BreadCrumbsProps {
 }
 
 export type Gallery = {
+  category_id: string;
+  category_name: string;
+  created_at: string;
+  file: string;
+  file_name: string;
   id: string;
-  name: string;
-  email: string;
-  image: string;
-  lastSeen: string;
-  createdAt: string;
+  title: string;
+  type: string;
+  updated_at: string;
 }
 
 export interface IItem {

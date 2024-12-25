@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/checkbox";
 import { Gallery } from "@interfaces/interface-items";
 import { SortableHeader } from "@components/SortableHeader";
 import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
-// import ProjectFile from "@ui/data-table/project-file";
+import ProjectFile from "@ui/data-table/project-file";
 import { ProjectActions } from "@ui/data-table/project-actions";
 
 export const columns: ColumnDef<Gallery>[] = [
@@ -28,7 +28,6 @@ export const columns: ColumnDef<Gallery>[] = [
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
         className="border-foreground shadow-lg border data-[state=checked]:border-0 data-[state=checked]:bg-green-500"
-        
       >
         {row.getIsSelected() && (
           <svg
@@ -62,7 +61,7 @@ export const columns: ColumnDef<Gallery>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title="Judul Media" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("title")} width={'80'} />,
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("title")} width="80" />,
     enableSorting: true,
   },
   {
@@ -70,7 +69,7 @@ export const columns: ColumnDef<Gallery>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title="Tipe Media" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("type")} width={'30'} />,
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("type")} width="30" />,
     enableSorting: true,
   },
   {
@@ -78,15 +77,31 @@ export const columns: ColumnDef<Gallery>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title="Kategori Media" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("category_name")} width={'30'} />,
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("category_name")} width="30" />,
     enableSorting: true,
   },
   {
-    accessorKey: "category_id",
+    accessorKey: "file_name",
+    header: "Nama File",
+    enableHiding: true,
+    cell: () => null,
+  },
+  {
+    accessorKey: "file",
     header: ({ column }) => (
       <SortableHeader column={column} title="File Media" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("category_id")} width={'80'} />,
+    cell: ({ row }) => {
+      const fileName = row.getValue<string>("file_name") || "Unnamed File";
+      const file = row.getValue<string>("file") || "";
+      
+      return (
+        <ProjectFile
+          name={fileName || "Unnamed File"}
+          file={file}
+        />
+      );
+    },
     enableSorting: true,
   },
   {
