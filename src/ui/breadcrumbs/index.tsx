@@ -9,10 +9,10 @@ const Breadcumbs = ({ title, breadCrumbs }: BreadCrumbsProps) => {
             <ol className="inline-flex text-sm items-center space-x-1 md:space-x-2">
             {breadCrumbs.map((item, index) => (
                 <li className="inline-flex items-center" key={index}>
-                    {breadCrumbs.length - 1 === index ? (
+                    {index !== 0 ? (
                         <Link
                             href={item.url}
-                            className="text-[12px] text-gold font-semibold"
+                            className="text-[12px] text-gold dark:text-blonde font-semibold"
                         >
                             {item.name}
                         </Link>

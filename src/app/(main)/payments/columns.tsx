@@ -2,14 +2,14 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/checkbox";
-import { Gallery } from "@interfaces/data-types";
+import { Payments } from "@interfaces/data-types";
 import { SortableHeader } from "@components/SortableHeader";
 import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
-import ProjectFile from "@ui/data-table/project-file";
 import { ProjectActions } from "@ui/data-table/project-actions";
-import { galleryString } from "@constant/breadcrumbs";
+import ProjectDesignBadge from "@ui/data-table/project-design-badge";
+import ProjectFile from "@ui/data-table/project-file";
 
-export const columns: ColumnDef<Gallery>[] = [
+export const columns: ColumnDef<Payments>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -58,42 +58,27 @@ export const columns: ColumnDef<Gallery>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "title",
+    accessorKey: "resident_name",
     header: ({ column }) => (
-      <SortableHeader column={column} title={`Judul ${galleryString}`} />
+      <SortableHeader column={column} title="Nama" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("title")} width="80" />,
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("resident_name")} width="60" />,
     enableSorting: true,
   },
+  
   {
-    accessorKey: "type",
-    header: ({ column }) => (
-      <SortableHeader column={column} title={`Tipe ${galleryString}`} />
-    ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("type")} width="30" />,
-    enableSorting: true,
-  },
-  {
-    accessorKey: "category_name",
-    header: ({ column }) => (
-      <SortableHeader column={column} title={`Kategori ${galleryString}`} />
-    ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("category_name")} width="30" />,
-    enableSorting: true,
-  },
-  {
-    accessorKey: "file_name",
+    accessorKey: "payment_file_name",
     enableHiding: true,
     cell: () => null,
   },
   {
-    accessorKey: "file",
+    accessorKey: "payment_evidence",
     header: ({ column }) => (
-      <SortableHeader column={column} title={`File ${galleryString}`} />
+      <SortableHeader column={column} title="Bukti Pembayaran" />
     ),
     cell: ({ row }) => {
-      const fileName = row.getValue<string>("file_name") || "Unnamed File";
-      const file = row.getValue<string>("file") || "";
+      const fileName = row.getValue<string>("payment_file_name") || "Unnamed File";
+      const file = row.getValue<string>("payment_evidence") || "";
       
       return (
         <ProjectFile
@@ -102,6 +87,30 @@ export const columns: ColumnDef<Gallery>[] = [
         />
       );
     },
+    enableSorting: true,
+  },
+  {
+    accessorKey: "billing_date",
+    header: ({ column }) => (
+      <SortableHeader column={column} title= "Tanggal Tagihan"/>
+    ),
+    cell: ({ row }) => <ProjectTextOrdering name={`${row.getValue("billing_date")}`} width="30" />,
+    enableSorting: true,
+  },
+  {
+    accessorKey: "billing_amount",
+    header: ({ column }) => (
+      <SortableHeader column={column} title="Tagihan" />
+    ),
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("billing_amount")} width="50" />,
+    enableSorting: true,
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <SortableHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => <ProjectDesignBadge name={row.getValue("status")} width="4" />,
     enableSorting: true,
   },
   {

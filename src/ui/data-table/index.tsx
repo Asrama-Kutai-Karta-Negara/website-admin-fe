@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React from "react";
+import React, { useState, } from "react";
 import { DataTableProps } from "@interfaces/interface-items";
 
 import { 
@@ -19,14 +19,22 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import TableHeader from "./table-header";
+import { columnVisibilityItems } from "@constant/condition/visibility-column";
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   footer,
 }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+
+  const initialColumnVisibility = columnVisibilityItems.reduce((acc, item) => {
+    acc[item.id] = false;
+    return acc;
+  }, {} as Record<string, boolean>);
+
+  const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>(initialColumnVisibility);
 
   const table = useReactTable({
     data,
@@ -39,7 +47,9 @@ export function DataTable<TData, TValue>({
     state: {
       rowSelection,
       sorting,
+      columnVisibility,
     },
+    onColumnVisibilityChange: setColumnVisibility,
     initialState: {
       pagination: {
         pageSize: 10,
@@ -50,7 +60,6 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="flex flex-col">
-      {/* <TableTabs /> */}
       <div className="relative w-full">
         <Table>
           <TableHeader table={table} />
@@ -61,14 +70,19 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    if (columnVisibility[cell.column.id] === false) {
+                      return null;
+                    }
+                    return (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))
             ) : (

@@ -2,14 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/checkbox";
-import { Gallery } from "@interfaces/data-types";
+import { Residents } from "@interfaces/data-types";
 import { SortableHeader } from "@components/SortableHeader";
 import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
-import ProjectFile from "@ui/data-table/project-file";
 import { ProjectActions } from "@ui/data-table/project-actions";
-import { galleryString } from "@constant/breadcrumbs";
+import ProjectDesignBadge from "@ui/data-table/project-design-badge";
 
-export const columns: ColumnDef<Gallery>[] = [
+export const columns: ColumnDef<Residents>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -58,50 +57,43 @@ export const columns: ColumnDef<Gallery>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "title",
+    accessorKey: "name",
     header: ({ column }) => (
-      <SortableHeader column={column} title={`Judul ${galleryString}`} />
+      <SortableHeader column={column} title="Nama" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("title")} width="80" />,
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("name")} width="50" />,
     enableSorting: true,
   },
   {
-    accessorKey: "type",
+    accessorKey: "age",
     header: ({ column }) => (
-      <SortableHeader column={column} title={`Tipe ${galleryString}`} />
+      <SortableHeader column={column} title="Umur" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("type")} width="30" />,
+    cell: ({ row }) => <ProjectTextOrdering name={`${row.getValue("age")}`} width="30" />,
     enableSorting: true,
   },
   {
-    accessorKey: "category_name",
+    accessorKey: "origin_campus",
     header: ({ column }) => (
-      <SortableHeader column={column} title={`Kategori ${galleryString}`} />
+      <SortableHeader column={column} title="Asal Kampus" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("category_name")} width="30" />,
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("origin_campus")} width="50" />,
     enableSorting: true,
   },
   {
-    accessorKey: "file_name",
-    enableHiding: true,
-    cell: () => null,
+    accessorKey: "room_number",
+    header: ({ column }) => (
+      <SortableHeader column={column} title="No Kamar" />
+    ),
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("room_number")} width="30" />,
+    enableSorting: true,
   },
   {
-    accessorKey: "file",
+    accessorKey: "status",
     header: ({ column }) => (
-      <SortableHeader column={column} title={`File ${galleryString}`} />
+      <SortableHeader column={column} title="Status" />
     ),
-    cell: ({ row }) => {
-      const fileName = row.getValue<string>("file_name") || "Unnamed File";
-      const file = row.getValue<string>("file") || "";
-      
-      return (
-        <ProjectFile
-          name={fileName || "Unnamed File"}
-          file={file}
-        />
-      );
-    },
+    cell: ({ row }) => <ProjectDesignBadge name={row.getValue("status")} width="4" />,
     enableSorting: true,
   },
   {

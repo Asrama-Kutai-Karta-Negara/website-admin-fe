@@ -32,9 +32,6 @@ export function TableFooter({
     }
     return pages;
   };
-  
-  console.log("page index: "+ pageIndex);
-  console.log("page count: "+ pageCount);
 
   return (
     <div className="flex items-center justify-between p-5 py-4">

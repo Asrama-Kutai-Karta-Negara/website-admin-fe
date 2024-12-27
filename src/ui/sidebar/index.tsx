@@ -4,7 +4,7 @@ import {
   CommandItem,
   CommandList,
 } from '@components/command';
-import { menuItems } from '@constant';
+import { menuItems } from '@constant/condition/general';
 import Link from 'next/link';
 
 const Sidebar = () => {

@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator
 } from '@components/dropdown-menu';
 import Link from 'next/link';
-import { profileItems } from '@constant';
+import { profileItems } from '@constant/condition/general';
 import CustomText from '@components/particel/custom-text';
 
 const RightNavBar = () => {
