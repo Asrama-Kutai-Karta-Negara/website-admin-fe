@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/form';
 import { Input } from '@components/input';
-import { MessageResponse, PaymentsAdd, Residents } from '@interfaces/data-types';
+import { formatMessage, PaymentsAdd, Residents } from '@interfaces/data-types';
 import { useToast } from '@interfaces/use-toast';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@components/select';
 import { statusPaymentGallery } from '@constant/condition/general';
@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import { Calendar } from '@components/date-picker';
 import { useEffect, useState } from 'react';
 import { addPaymentForm } from '@constant/data/payment';
+import SatellitePrivate from '@services/satellite/private';
 
 export default function AddPayments({ onSubmit }: { onSubmit: (data: PaymentsAdd) => void }) {
   const { toast } = useToast();
@@ -33,10 +34,10 @@ export default function AddPayments({ onSubmit }: { onSubmit: (data: PaymentsAdd
   useEffect(() => {
     const fetchResidents = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/v1/residents');
-        const response : MessageResponse = await res.json();
+        const res = await SatellitePrivate.get<formatMessage>('/categories');
+        const response = res.data;
+        const residents : Residents[] = Array.isArray(response.data) ? response.data : [];
         if (response.success === true) {
-          const residents = response.data as Residents[];
           setResidents(residents);
         }
       } catch (error) {

@@ -38,3 +38,16 @@ export interface DynamicCardProps {
   body?: React.ReactNode;
   border?: boolean;
 }
+
+export type FormState =
+  | {
+      errors?: {
+        name?: string[];
+        email?: string[];
+        password?: string[];
+        confirm_password?: string[];
+      };
+      message?: string;
+      status: boolean | false;
+    }
+  | undefined;

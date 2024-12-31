@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+    reactStrictMode: true,
+    env: {
+        NEXT_BASE_URL: "http://127.0.0.1:8000/api/v1",
+        NEXT_API_KEY: "881182541952993820593968",
+        NEXT_NODE_ENV: "development"
+    },
     images: {
         domains: [
             "cdn.pixabay.com",

@@ -1,7 +1,7 @@
 export type formatMessage = {
   success: boolean;
   message: string;
-  data: unknown;
+  data: unknown | null;
 }
 
 export type MessageResponse = {
@@ -15,6 +15,37 @@ type timeAt = {
   created_at: string;
   updated_at: string;
 }
+
+// login
+
+export type LoginRequest = {
+  email: string;
+  password: string;
+  errors: { [key: string]: string[] } | undefined; 
+  message: string | undefined;
+  status: boolean;
+};
+
+export type RegisterRequest = {
+  name: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  errors: { [key: string]: string[] } | undefined; 
+  message: string | undefined;
+  status: boolean;
+};
+
+export type UserLogin = {
+  name: string;
+  email: string;
+  access_token: string;
+};
+
+export type UserRegister = {
+  token: string;
+  name: string;
+};
 
 // category
 export type Categories = {

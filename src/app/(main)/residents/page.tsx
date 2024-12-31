@@ -11,6 +11,7 @@ import { Plus, SearchIcon } from 'lucide-react';
 import { TableFooter } from '@ui/data-table/table-footer';
 import Link from "next/link";
 import { breadCrumbsResidentsIndex, residentsTitle, residentString } from "@constant/breadcrumbs";
+import SatellitePrivate from "@services/satellite/private";
 
 export default function ResidentsPage() {
   const [residents, setResidents] = useState<Residents[]>([]);
@@ -28,11 +29,9 @@ export default function ResidentsPage() {
   
   const fetchResidents = async (page: number, query: string) => {
     try {
-      const res = await fetch(
-        `http://127.0.0.1:8000/api/v1/residents?name=${query}&page=${page+1}&limit=10`
-      );
-      const response = await res.json();
-      const residents: Residents[] = response.data;
+      const res = await SatellitePrivate.get<MessageResponse>(`/residents?name=${query}&page=${page+1}&limit=10`);
+      const response = res.data;
+      const residents: Residents[] = Array.isArray(response.data) ? response.data : [];
       setResidents(residents);
       setPagination({
         count: response.count,
@@ -58,10 +57,9 @@ export default function ResidentsPage() {
   };
 
   return (
-    <>
-      <div className='container max-w-screen-xl mx-auto px-4'>
-        <Breadcumbs title={residentsTitle} breadCrumbs={breadCrumbsResidentsIndex} />
-        <DynamicCard
+    <div className='container max-w-screen-xl mx-auto px-4'>
+      <Breadcumbs title={residentsTitle} breadCrumbs={breadCrumbsResidentsIndex} />
+      <DynamicCard
         header={
           <div className='flex p-4 justify-between'>
             <Link href={'/residents/add'}>
@@ -99,8 +97,7 @@ export default function ResidentsPage() {
             }
           />
         }
-      />
+    />
     </div>
-    </>
   );
 };

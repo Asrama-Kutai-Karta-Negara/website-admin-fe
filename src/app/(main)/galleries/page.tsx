@@ -11,6 +11,8 @@ import { TableFooter } from '@ui/data-table/table-footer';
 import Link from "next/link";
 import { breadCrumbsGalleriesIndex, galleriesTitle, galleryString } from "@constant/breadcrumbs";
 import { Gallery } from "@interfaces/data-types";
+import { AxiosError } from "axios";
+import SatellitePrivate from "@services/satellite/private";
 
 export default function GalleriesPage() {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
@@ -25,20 +27,31 @@ export default function GalleriesPage() {
   
   const fetchGalleries = async (page: number, query: string) => {
     try {
-      const res = await fetch(
-        `http://127.0.0.1:8000/api/v1/galleries?name=${query}&page=${page+1}&limit=10`
+      const res = await SatellitePrivate.get(
+        `/galleries`, 
+        {
+          params: {
+            name: query,
+            page: page + 1,
+            limit: 10
+          }
+        }
       );
-      const response = await res.json();
-      const galleries: Gallery[] = response.data;
+
+      const galleries: Gallery[] = res.data.data;
       setGalleries(galleries);
       setPagination({
-        current_page: response.current_page,
-        total_pages: response.total_pages,
-        previous_page: response.previous_page,
-        next_page: response.current_page + 1,
+        current_page: res.data.current_page,
+        total_pages: res.data.total_pages,
+        previous_page: res.data.previous_page,
+        next_page: res.data.current_page + 1,
       });
     } catch (error) {
-      console.error("Error fetching galleries:", error);
+      if (error instanceof AxiosError) {
+        console.error("Axios Error: ", error.response?.data || error.message);
+      } else {
+        console.error("Error fetching galleries:", error);
+      }
     }
   };
 
@@ -52,10 +65,9 @@ export default function GalleriesPage() {
   };
 
   return (
-    <>
-      <div className='container max-w-screen-xl mx-auto px-4'>
-        <Breadcumbs title={galleriesTitle} breadCrumbs={breadCrumbsGalleriesIndex} />
-        <DynamicCard
+    <div className='container max-w-screen-xl mx-auto px-4'>
+      <Breadcumbs title={galleriesTitle} breadCrumbs={breadCrumbsGalleriesIndex} />
+      <DynamicCard
         header={
           <div className='flex p-4 justify-between'>
             <Link href={'/galleries/add'}>
@@ -95,6 +107,5 @@ export default function GalleriesPage() {
         }
       />
     </div>
-    </>
   );
 };

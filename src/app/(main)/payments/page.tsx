@@ -11,6 +11,7 @@ import { Plus, SearchIcon } from 'lucide-react';
 import { TableFooter } from '@ui/data-table/table-footer';
 import Link from "next/link";
 import { breadCrumbsPaymentsIndex, paymentsTitle, paymentString, residentString } from "@constant/breadcrumbs";
+import SatellitePrivate from "@services/satellite/private";
 
 export default function PaymentsPage() {
   const [payments, setPayments] = useState<Payments[]>([]);
@@ -28,11 +29,10 @@ export default function PaymentsPage() {
   
   const fetchPayments = async (page: number, query: string) => {
     try {
-      const res = await fetch(
-        `http://127.0.0.1:8000/api/v1/payments?resident=${query}&page=${page+1}&limit=10`
-      );
-      const response = await res.json();
-      const payments: Payments[] = response.data;
+
+      const res = await SatellitePrivate.get<MessageResponse>(`/payments?resident=${query}&page=${page+1}&limit=10`);
+      const response = res.data;
+      const payments : Payments[] = Array.isArray(response.data) ? response.data : [];
       setPayments(payments);
       setPagination({
         count: response.count,

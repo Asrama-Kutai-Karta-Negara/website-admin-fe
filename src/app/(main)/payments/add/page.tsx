@@ -22,7 +22,6 @@ export default function AddPaymentsPage() {
       return;
     }
     
-    console.log("Data to save:", formData);
   };
 
   return (

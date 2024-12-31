@@ -46,20 +46,6 @@ const menuItems: Array<{
   },
 ];
 
-const profileItems: Array<{
-  label: string;
-  link: string;
-}> = [
-  {
-    label: 'Profile',
-    link: '/profile',
-  },
-  {
-    label: 'Logout',
-    link: '/auth',
-  }
-];
-
 const typeMediaGallery: RadioButtonItem[] = [
   {
     value: 'Foto',
@@ -132,4 +118,4 @@ const statusPaymentGallery: RadioButtonItem[] = [
   },
 ];
 
-export { menuItems, profileItems, typeMediaGallery, originCampusResident, roomNumberResident, statusPaymentGallery };
+export { menuItems, typeMediaGallery, originCampusResident, roomNumberResident, statusPaymentGallery };

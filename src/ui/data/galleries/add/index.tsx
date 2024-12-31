@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/form';
 import { Input } from '@components/input';
-import { Categories, GalleryAddForm } from '@interfaces/data-types';
+import { Categories, formatMessage, GalleryAddForm } from '@interfaces/data-types';
 import { useToast } from '@interfaces/use-toast';
 import RadioGroupButton from '@components/radio-group';
 import { typeMediaGallery } from '@constant/condition/general';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@components/select';
 import { galleryString } from '@constant/breadcrumbs';
 import { addGalleryForm } from '@constant/data/gallery';
+import SatellitePrivate from '@services/satellite/private';
 
 export default function AddGalleries({ onSubmit }: { onSubmit: (data: GalleryAddForm) => void }) {
   const { toast } = useToast();
@@ -30,10 +31,11 @@ export default function AddGalleries({ onSubmit }: { onSubmit: (data: GalleryAdd
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/v1/public/categories');
-        const response = await res.json();
+        const res = await SatellitePrivate.get<formatMessage>('/categories');
+        const response = res.data;
+        const categories : Categories[] = Array.isArray(response.data) ? response.data : [];
         if (response.success === true) {
-          setCategories(response.data);
+          setCategories(categories);
         }
       } catch (error) {
         console.error('Error fetching categories:', error);

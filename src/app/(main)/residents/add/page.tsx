@@ -21,8 +21,6 @@ export default function AddResidentsPage() {
     if (!formData) {
       return;
     }
-    
-    console.log("Data to save:", formData);
   };
 
   return (

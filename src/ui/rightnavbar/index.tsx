@@ -15,10 +15,14 @@ import {
   DropdownMenuSeparator
 } from '@components/dropdown-menu';
 import Link from 'next/link';
-import { profileItems } from '@constant/condition/general';
 import CustomText from '@components/particel/custom-text';
+import { deleteCookies, logout } from '@services/auth/01-auth';
+import { useToast } from '@interfaces/use-toast';
+import { formatMessage } from '@interfaces/data-types';
+import { redirect } from 'next/navigation';
 
 const RightNavBar = () => {
+  const { toast } = useToast();
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
@@ -43,6 +47,31 @@ const RightNavBar = () => {
     hour12: false,
   });
   formattedTime = formattedTime.replace(/\./g, ':');
+
+  const handleLogout = async () => {
+    try {
+      const logoutResponse : formatMessage = await logout();
+      if(logoutResponse.success){
+        deleteCookies();
+        setTimeout(() => {
+          redirect('/');
+        }, 1000);
+        toast({
+          variant: 'success',
+          title: 'Logout',
+          description: logoutResponse.message
+        });
+      }else{
+        toast({
+          variant: 'failed',
+          title: 'Logout',
+          description: logoutResponse.message
+        });
+      }
+    } catch (error) {
+      console.error('Logout failed', error);
+    }
+  };
 
   return (
     <>
@@ -82,11 +111,12 @@ const RightNavBar = () => {
             <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {profileItems.map((item, index) => (
-                  <DropdownMenuItem key={index}>
-                    <Link href={item.link}>{item.label}</Link>
+                <DropdownMenuItem>
+                  <Link href='/profile'>Profile</Link>
                 </DropdownMenuItem>
-                ))}
+                <DropdownMenuItem onClick={handleLogout}>
+                  Logout
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     </>
