@@ -16,7 +16,8 @@ export default function AddPaymentsPage() {
   const router = useRouter(); 
   const [formData, setFormData] = useState<PaymentAddForm>({
     resident_id: '',
-    billing_date: new Date(),
+    billing_date: '',
+    billing_date_convert: new Date(),
     billing_amount: '',
     status: '',
     payment_evidence: '',
@@ -26,6 +27,7 @@ export default function AddPaymentsPage() {
   const { isLoading, createNewPayment } = useCreate();
 
   const handleFormSubmit = (data: PaymentAddForm) => {
+    console.log(data);
     setFormData(data);
   };
 

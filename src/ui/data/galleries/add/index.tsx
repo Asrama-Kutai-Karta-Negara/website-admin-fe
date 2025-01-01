@@ -11,6 +11,8 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@
 import { galleryString } from '@constant/breadcrumbs';
 import { addGalleryForm } from '@constant/data/gallery';
 import SatellitePrivate from '@services/satellite/private';
+import { CloudUpload, File } from 'lucide-react';
+import { bytesToMb } from '@utils/format';
 
 export default function AddGalleries({ onSubmit }: { onSubmit: (data: GalleryAddForm) => void }) {
   const [categories, setCategories] = useState<Categories[]>([]);
@@ -46,6 +48,7 @@ export default function AddGalleries({ onSubmit }: { onSubmit: (data: GalleryAdd
     const handleFormChange = (data: GalleryAddForm) => {
         if (data.files && data.files[0]) {
             const file = data.files[0];
+            console.log(file);
             data.file_name = file.name;
             const reader = new FileReader();
 
@@ -146,22 +149,78 @@ export default function AddGalleries({ onSubmit }: { onSubmit: (data: GalleryAdd
             name="files"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs dark:text-white">{addGalleryForm[3].label}</FormLabel>
+                <FormLabel className="text-xs dark:text-white">
+                  {addGalleryForm[3].label}
+                </FormLabel>
                 <FormControl>
-                  <Input
-                    type="file"
-                    className="bg-yellow border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                    placeholder="Upload File"
-                    onChange={(e) => {
-                      field.onChange(e.target.files);
-                      handleFormChange(form.getValues()); 
-                    }}
-                  />
+                  <div>
+                      <div>
+                        
+                        {!field.value || field.value.length === 0 ? (
+                          <>
+                          <div
+                            className="border-dashed border-2 border-gray-300 bg-background rounded-lg p-4 flex flex-col items-center justify-center text-center cursor-pointer"
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              field.onChange(e.dataTransfer.files);
+                              handleFormChange(form.getValues());
+                            }}
+                            onClick={() =>
+                              document.getElementById("fileUploadInput")?.click()
+                            }
+                          >
+                            <CloudUpload className="w-12 h-12 mb-2" />
+                            <p className="text-sm font-medium text-gray-500">
+                              Unggah File
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              Only Support JPG, PNG, JPEG, MKV & MP4 Format, Maximum file
+                              size 5MB
+                            </p>
+                          </div>
+                          </>
+                        ) : (
+                           <div
+                            className="bg-background rounded-lg p-4 flex cursor-pointer"
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              field.onChange(e.dataTransfer.files);
+                              handleFormChange(form.getValues());
+                            }}
+                            onClick={() =>
+                              document.getElementById("fileUploadInput")?.click()
+                            }
+                          >
+                            <File className="w-12 h-12 mb-2" />
+                            {Array.from(field.value).map((file: File, index: number) => (
+                              <div className='flex flex-col ml-2' key={index}>
+                                <span>{file.name}</span>
+                                <span className='text-muted-foreground'>{bytesToMb(file.size)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                       
+                        <input
+                          id="fileUploadInput"
+                          type="file"
+                          className="hidden"
+                          onChange={(e) => {
+                            const uploadedFiles = Array.from(e.target.files || []);
+                            field.onChange(uploadedFiles);
+                            handleFormChange(form.getValues());
+                          }}
+                        />
+                      </div>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
         </form>
       </Form>
     </div>

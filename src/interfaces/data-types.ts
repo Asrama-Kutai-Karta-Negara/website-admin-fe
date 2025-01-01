@@ -91,7 +91,8 @@ export type Residents = {
 export type ResidentAddForm = {
   name: string;
   age: string | number;
-  birth_date: Date | string;
+  birth_date: string;
+  birth_date_convert: Date | number;
   phone_number: string;
   origin_campus: string;
   room_number: string;
@@ -114,8 +115,9 @@ export type Payments = {
 
 export type PaymentAddForm = {
   resident_id: string;
-  billing_date: Date;
-  billing_amount: string;
+  billing_date: string;
+  billing_date_convert: Date | number;
+  billing_amount: string | number;
   status: string;
   payment_evidence: string;
   files?: File[]; 

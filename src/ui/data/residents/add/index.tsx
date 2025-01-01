@@ -12,8 +12,9 @@ import { Popover, PopoverContent, PopoverTrigger } from '@components/popover';
 import { Button } from '@components/button';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
-import { Calendar } from '@components/date-picker';
+import { Calendar } from '@components/calendar';
 import { useState } from 'react';
+import { cn } from '@lib/utils';
 
 export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAddForm) => void }) {
   const { toast } = useToast();
@@ -22,7 +23,8 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
     defaultValues: {
       name: '',
       age: '',
-      birth_date: undefined,
+      birth_date: '',
+      birth_date_convert: undefined,
       phone_number: '',
       origin_campus: '',
       room_number: '',
@@ -34,11 +36,11 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
   const [previousData, setPreviousData] = useState<ResidentAddForm>(form.getValues());
 
   const handleFormChange = (data: ResidentAddForm) => {
-    const { phone_number, age, birth_date, address } = data;
+    const { phone_number, age, birth_date_convert, address } = data;
     const hasChanged = 
       previousData.age !== age ||
       previousData.phone_number !== phone_number ||
-      previousData.birth_date !== birth_date ||
+      previousData.birth_date_convert !== birth_date_convert ||
       previousData.address !== address;
     let success = true;
     
@@ -73,9 +75,8 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
         data.age = parseInt(age.toString(), 10);
       }
 
-      if (birth_date) {
-        console.log("MASUK SINI");
-        data.birth_date = format(new Date(birth_date), 'yyyy-MM-dd');
+      if (birth_date_convert) {
+        data.birth_date = format(new Date(birth_date_convert), 'yyyy-MM-dd');
       }
 
       if (address){
@@ -158,7 +159,7 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
               {/* Birth Date Field */}
               <FormField
                 control={form.control}
-                name="birth_date"
+                name="birth_date_convert"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs">{addResidentForm[2].label}</FormLabel>
@@ -167,19 +168,17 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
-                            className={'flex items-center justify-between bg-background w-full font-normal'}
-                          >
-                            {field.value ? (
-                              format(field.value, 'dd/M/yyyy')
-                            ) : (
-                              <span className='text-muted-foreground'>dd/mm/yyyy</span>
+                            className={cn(
+                              "w-full justify-between font-normal",
+                              !field.value && "text-muted-foreground",
                             )}
-                            <CalendarIcon className='ml-2 h-4 w-4 justify-items-end' />
-                            
+                          >
+                            {field.value ? format(field.value, "dd MMMM yyyy") : <span>Pick a date</span>}
+                            <CalendarIcon className="size-4" />
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className='w-auto p-0'>
-                          <Calendar
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar 
                             mode='single'
                             selected={field.value}
                             onSelect={
