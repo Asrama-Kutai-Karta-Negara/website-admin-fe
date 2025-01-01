@@ -1,5 +1,3 @@
-
-
 export const galleryString = "Media";
 export const residentString = "Penghuni";
 export const paymentString = "Pembayaran";

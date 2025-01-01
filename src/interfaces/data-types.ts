@@ -17,20 +17,9 @@ type timeAt = {
 }
 
 // login
-
 export type LoginRequest = {
   email: string;
   password: string;
-  errors: { [key: string]: string[] } | undefined; 
-  message: string | undefined;
-  status: boolean;
-};
-
-export type RegisterRequest = {
-  name: string;
-  email: string;
-  password: string;
-  confirm_password: string;
   errors: { [key: string]: string[] } | undefined; 
   message: string | undefined;
   status: boolean;
@@ -40,6 +29,17 @@ export type UserLogin = {
   name: string;
   email: string;
   access_token: string;
+};
+
+//register
+export type RegisterRequest = {
+  name: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  errors: { [key: string]: string[] } | undefined; 
+  message: string | undefined;
+  status: boolean;
 };
 
 export type UserRegister = {
@@ -88,10 +88,10 @@ export type Residents = {
   status: string;
 } & timeAt;
 
-export type ResidentsAdd = {
+export type ResidentAddForm = {
   name: string;
   age: string | number;
-  birth_date: Date;
+  birth_date: Date | string;
   phone_number: string;
   origin_campus: string;
   room_number: string;
@@ -112,7 +112,7 @@ export type Payments = {
   status: string;
 } & timeAt;
 
-export type PaymentsAdd = {
+export type PaymentAddForm = {
   resident_id: string;
   billing_date: Date;
   billing_amount: string;
@@ -121,10 +121,3 @@ export type PaymentsAdd = {
   files?: File[]; 
   payment_file_name: string;
 };
-// resident
-
-export interface PostEditPageProps {
-  params: {
-    id: string;
-  };
-}

@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/form';
 import { Input } from '@components/input';
-import { ResidentsAdd } from '@interfaces/data-types';
+import { ResidentAddForm } from '@interfaces/data-types';
 import { useToast } from '@interfaces/use-toast';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@components/select';
 import { addResidentForm } from '@constant/data/resident';
@@ -15,10 +15,10 @@ import { format } from 'date-fns';
 import { Calendar } from '@components/date-picker';
 import { useState } from 'react';
 
-export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentsAdd) => void }) {
+export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAddForm) => void }) {
   const { toast } = useToast();
 
-  const form = useForm<ResidentsAdd>({
+  const form = useForm<ResidentAddForm>({
     defaultValues: {
       name: '',
       age: '',
@@ -31,11 +31,15 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentsA
       status: 'active',
     },
   });
-  const [previousData, setPreviousData] = useState<ResidentsAdd>(form.getValues());
+  const [previousData, setPreviousData] = useState<ResidentAddForm>(form.getValues());
 
-  const handleFormChange = (data: ResidentsAdd) => {
-    const { phone_number, age } = data;
-    const hasChanged = previousData.age !== age || previousData.phone_number !== phone_number;
+  const handleFormChange = (data: ResidentAddForm) => {
+    const { phone_number, age, birth_date, address } = data;
+    const hasChanged = 
+      previousData.age !== age ||
+      previousData.phone_number !== phone_number ||
+      previousData.birth_date !== birth_date ||
+      previousData.address !== address;
     let success = true;
     
     if (hasChanged) {
@@ -67,6 +71,26 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentsA
         success = false;
       }else{
         data.age = parseInt(age.toString(), 10);
+      }
+
+      if (birth_date) {
+        console.log("MASUK SINI");
+        data.birth_date = format(new Date(birth_date), 'yyyy-MM-dd');
+      }
+
+      if (address){
+        if(address.includes(',')){
+          const lastCommaIndex = address.lastIndexOf(',');
+          data.address = address.slice(0, lastCommaIndex).trim(); 
+          data.origin_city = address.slice(lastCommaIndex + 1).trim(); 
+        } else {
+          toast({
+            variant: 'warning',
+            title: 'Alamat',
+            description: 'Alamat harus memiliki format yang benar dengan koma (,) untuk memisahkan kota asal!',
+          });
+          success = false;
+        }
       }
     }
     if(success){

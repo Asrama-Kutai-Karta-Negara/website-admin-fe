@@ -38,9 +38,9 @@ export function SortableHeader<TData, TValue>({
             )}
           >
             <span>{title}</span>
-            {column.getIsSorted() === "desc" && <ArrowDown />}
-            {column.getIsSorted() === "asc" && <ArrowUp />}
-            {!column.getIsSorted() && <ChevronsUpDown className="h-1 w-1" />}
+            {column.getIsSorted() === "desc" && <ArrowDown size={15} />}
+            {column.getIsSorted() === "asc" && <ArrowUp size={15} />}
+            {!column.getIsSorted() && <ChevronsUpDown size={15}  />}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">

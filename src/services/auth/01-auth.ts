@@ -150,11 +150,9 @@ export async function register(
       };
     }
     const response = res.data;
-    console.log(response);
     if (response.data && isUserRegister(response.data)) {
       user = response.data; 
     }
-    console.log(user);
 
     if (!response.success) {
       return { 
@@ -203,6 +201,33 @@ export async function register(
   }
 }
 
+export async function refreshAccessToken(token: string): Promise<string | undefined> {
+  try {
+    const resRefreshToken = await SatellitePublic.post(
+      '/auth/refresh-token',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const newToken = resRefreshToken?.data?.data?.access_token;
+    if (newToken) {
+      const cookiesObj = await cookies(); 
+      cookiesObj.set('TOKEN_AUTH', newToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        path: '/',
+      });
+      return newToken;
+    }
+  } catch (error) {
+    console.error('Failed to refresh token:', error);
+  }
+}
+
 function isUserLogin(data: unknown): data is UserLogin {
   return (
     typeof data === 'object' &&
@@ -219,6 +244,14 @@ function isUserRegister(data: unknown): data is UserRegister {
     data !== null &&
     'name' in data &&
     'token' in data
+  );
+}
+
+function isRefreshToken(data: unknown): data is UserLogin {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'access_token' in data
   );
 }
 

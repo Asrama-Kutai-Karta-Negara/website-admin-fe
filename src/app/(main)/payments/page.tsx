@@ -29,8 +29,16 @@ export default function PaymentsPage() {
   
   const fetchPayments = async (page: number, query: string) => {
     try {
-
-      const res = await SatellitePrivate.get<MessageResponse>(`/payments?resident=${query}&page=${page+1}&limit=10`);
+      const res = await SatellitePrivate.get<MessageResponse>(
+        `/payments`,
+        {
+          params: {
+            resident: query,
+            page: page + 1,
+            limit: 10
+          }
+        }
+      );
       const response = res.data;
       const payments : Payments[] = Array.isArray(response.data) ? response.data : [];
       setPayments(payments);

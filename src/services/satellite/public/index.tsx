@@ -1,4 +1,4 @@
-import { MessageResponse } from "@interfaces/data-types";
+import { formatMessage } from "@interfaces/data-types";
 import axios, { AxiosResponse } from "axios";
 
 const SatellitePublic = axios.create({
@@ -10,8 +10,8 @@ const SatellitePublic = axios.create({
   },
 });
 
-axios.interceptors.response.use(
-  (response: AxiosResponse<MessageResponse>) => {
+SatellitePublic.interceptors.response.use(
+  (response: AxiosResponse<formatMessage>) => {
     return response;
   },
   (error) => {

@@ -8,22 +8,33 @@ import { breadCrumbsPaymentsAdd, paymentsAddTitle, paymentString } from '@consta
 import Breadcumbs from '@ui/breadcrumbs';
 import AddPayments from '@ui/data/payments/add';
 import Link from 'next/link';
-import { ResidentsAdd } from '@interfaces/data-types';
+import { PaymentAddForm } from '@interfaces/data-types';
+import { useRouter } from 'next/navigation';
+import { useCreate } from './hook';
 
 export default function AddPaymentsPage() {
-  const [formData, setFormData] = useState<ResidentsAdd | null>(null);
+  const router = useRouter(); 
+  const [formData, setFormData] = useState<PaymentAddForm>({
+    resident_id: '',
+    billing_date: new Date(),
+    billing_amount: '',
+    status: '',
+    payment_evidence: '',
+    files: undefined,
+    payment_file_name: '',
+  });
+  const { isLoading, createNewPayment } = useCreate();
 
-  const handleFormSubmit = (data: ResidentsAdd) => {
+  const handleFormSubmit = (data: PaymentAddForm) => {
     setFormData(data);
   };
 
   const handleSave = async () => {
-    if (!formData) {
-      return;
-    }
-    
-  };
 
+    await createNewPayment(formData, () => {
+      router.push('/payments');
+    });
+  }
   return (
     <>
       <div className="container max-w-screen-xl mx-auto px-4">

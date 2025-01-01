@@ -10,7 +10,7 @@ import { Plus, SearchIcon } from 'lucide-react';
 import { TableFooter } from '@ui/data-table/table-footer';
 import Link from "next/link";
 import { breadCrumbsGalleriesIndex, galleriesTitle, galleryString } from "@constant/breadcrumbs";
-import { Gallery } from "@interfaces/data-types";
+import { Gallery, MessageResponse } from "@interfaces/data-types";
 import { AxiosError } from "axios";
 import SatellitePrivate from "@services/satellite/private";
 
@@ -27,8 +27,8 @@ export default function GalleriesPage() {
   
   const fetchGalleries = async (page: number, query: string) => {
     try {
-      const res = await SatellitePrivate.get(
-        `/galleries`, 
+      const res = await SatellitePrivate.get<MessageResponse>(
+        `/galleries`,
         {
           params: {
             name: query,
@@ -37,8 +37,8 @@ export default function GalleriesPage() {
           }
         }
       );
-
-      const galleries: Gallery[] = res.data.data;
+      const response = res.data;
+      const galleries : Gallery[] = Array.isArray(response.data) ? response.data : [];
       setGalleries(galleries);
       setPagination({
         current_page: res.data.current_page,

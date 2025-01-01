@@ -1,6 +1,6 @@
-import { MessageResponse } from "@interfaces/data-types";
+import {refreshAccessToken } from "@services/auth/01-auth";
 import { getCookiesStore } from "@store/cookiesStore";
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
 const SatellitePrivate: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_BASE_URL,
@@ -15,7 +15,7 @@ SatellitePrivate.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const token = await getCookiesStore();
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -25,10 +25,21 @@ SatellitePrivate.interceptors.request.use(
 );
 
 SatellitePrivate.interceptors.response.use(
-  (response: AxiosResponse<MessageResponse>) => {
-    return response;
-  },
-  (error) => {
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      const oldToken = await getCookiesStore();
+      if (oldToken) {
+        const newToken = await refreshAccessToken(oldToken);
+        if (newToken) {
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return SatellitePrivate(originalRequest);
+        }
+      }
+    }
     return Promise.reject(error);
   }
 );

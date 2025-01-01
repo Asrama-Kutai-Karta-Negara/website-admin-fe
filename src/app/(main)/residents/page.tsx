@@ -29,7 +29,16 @@ export default function ResidentsPage() {
   
   const fetchResidents = async (page: number, query: string) => {
     try {
-      const res = await SatellitePrivate.get<MessageResponse>(`/residents?name=${query}&page=${page+1}&limit=10`);
+      const res = await SatellitePrivate.get<MessageResponse>(
+        `/residents`,
+        {
+          params: {
+            name: query,
+            page: page + 1,
+            limit: 10
+          }
+        }
+      );
       const response = res.data;
       const residents: Residents[] = Array.isArray(response.data) ? response.data : [];
       setResidents(residents);

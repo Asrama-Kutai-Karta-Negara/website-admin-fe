@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/form';
 import { Input } from '@components/input';
 import { Categories, formatMessage, GalleryAddForm } from '@interfaces/data-types';
-import { useToast } from '@interfaces/use-toast';
 import RadioGroupButton from '@components/radio-group';
 import { typeMediaGallery } from '@constant/condition/general';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@components/select';
@@ -14,7 +13,6 @@ import { addGalleryForm } from '@constant/data/gallery';
 import SatellitePrivate from '@services/satellite/private';
 
 export default function AddGalleries({ onSubmit }: { onSubmit: (data: GalleryAddForm) => void }) {
-  const { toast } = useToast();
   const [categories, setCategories] = useState<Categories[]>([]);
 
   const form = useForm<GalleryAddForm>({
