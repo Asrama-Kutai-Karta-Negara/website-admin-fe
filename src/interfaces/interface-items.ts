@@ -31,6 +31,7 @@ export interface DataTableProps<TData, TValue> {
 
 export interface ProjectActionsProps<TData> {
   row: Row<TData>;
+  path: string;
 }
 
 export interface DynamicCardProps {

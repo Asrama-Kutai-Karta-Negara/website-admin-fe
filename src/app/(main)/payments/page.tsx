@@ -10,7 +10,7 @@ import { Button } from '@components/button';
 import { Plus, SearchIcon } from 'lucide-react';
 import { TableFooter } from '@ui/data-table/table-footer';
 import Link from "next/link";
-import { breadCrumbsPaymentsIndex, paymentsTitle, paymentString, residentString } from "@constant/breadcrumbs";
+import { createTitleAndBreadcrumbs, paymentString, paymentUrl, residentString } from "@constant/breadcrumbs";
 import SatellitePrivate from "@services/satellite/private";
 
 export default function PaymentsPage() {
@@ -65,10 +65,11 @@ export default function PaymentsPage() {
     setCurrentPage(0);
   };
 
+  const breadcrumbs = createTitleAndBreadcrumbs(paymentString, paymentUrl);
   return (
     <>
       <div className='container max-w-screen-xl mx-auto px-4'>
-        <Breadcumbs title={paymentsTitle} breadCrumbs={breadCrumbsPaymentsIndex} />
+        <Breadcumbs title={breadcrumbs.indexTitle} breadCrumbs={breadcrumbs.breadcrumbsIndex} />
         <DynamicCard
         header={
           <div className='flex p-4 justify-between'>

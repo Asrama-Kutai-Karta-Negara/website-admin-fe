@@ -9,7 +9,7 @@ import { Button } from '@components/button';
 import { Plus, SearchIcon } from 'lucide-react';
 import { TableFooter } from '@ui/data-table/table-footer';
 import Link from "next/link";
-import { breadCrumbsGalleriesIndex, galleriesTitle, galleryString } from "@constant/breadcrumbs";
+import { createTitleAndBreadcrumbs, galleryUrl, galleryString } from "@constant/breadcrumbs";
 import { Gallery, MessageResponse } from "@interfaces/data-types";
 import { AxiosError } from "axios";
 import SatellitePrivate from "@services/satellite/private";
@@ -63,10 +63,12 @@ export default function GalleriesPage() {
     setSearchQuery(e.target.value);
     setCurrentPage(0);
   };
-
+  
+  const breadcrumbs = createTitleAndBreadcrumbs(galleryString, galleryUrl);
+  
   return (
     <div className='container max-w-screen-xl mx-auto px-4'>
-      <Breadcumbs title={galleriesTitle} breadCrumbs={breadCrumbsGalleriesIndex} />
+      <Breadcumbs title={breadcrumbs.indexTitle} breadCrumbs={breadcrumbs.breadcrumbsIndex} />
       <DynamicCard
         header={
           <div className='flex p-4 justify-between'>

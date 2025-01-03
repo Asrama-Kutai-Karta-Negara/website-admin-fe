@@ -1,7 +1,7 @@
-export type formatMessage = {
+export type formatMessage<T = unknown> = {
   success: boolean;
   message: string;
-  data: unknown | null;
+  data: T | null;
 }
 
 export type MessageResponse = {
@@ -54,6 +54,20 @@ export type Categories = {
   description: string;
 }& timeAt;
 
+// room number
+export type RoomNumbers = {
+  id: string;
+  name: string;
+  description: string;
+}& timeAt;
+
+// origin campus
+export type OriginCampus = {
+  id: string;
+  name: string;
+  description: string;
+}& timeAt;
+
 // gallery
 export type Gallery = {
   id: string;
@@ -61,6 +75,7 @@ export type Gallery = {
   type: string;
   category_id: string;
   file: string;
+  file_gallery: File | undefined;
   file_name: string;
   category_name: string;
 }& timeAt;
@@ -69,22 +84,33 @@ export type GalleryAddForm = {
   title: string;
   type: string;
   category_id: string;
-  file: string;
-  files?: File[]; 
+  file: File;
+  files: File[] | undefined;
+};
+
+export type GalleryEditForm = {
+  title: string;
+  type: string;
+  category_id: string;
+  file: File | null;
+  files: File[] | undefined;
   file_name: string;
 };
 // gallery
 
 // resident
-export type Residents = {
+export type Resident = {
   id: string;
   name: string;
-  age: number | null;
+  age: number | string;
+  birth_date: string;
   address: string;
   origin_city: string;
-  origin_campus: string;
+  origin_campus: string | null;
+  origin_campus_id: string;
   phone_number: string;
-  room_number: string;
+  room_number: string | null;
+  room_number_id: string;
   status: string;
 } & timeAt;
 
@@ -92,10 +118,24 @@ export type ResidentAddForm = {
   name: string;
   age: string | number;
   birth_date: string;
-  birth_date_convert: Date | number;
+  birth_date_convert: Date;
   phone_number: string;
-  origin_campus: string;
-  room_number: string;
+  origin_campus_id: string;
+  room_number_id: string;
+  address: string;
+  origin_city: string;
+  status: string;
+};
+
+
+export type ResidentEditForm = {
+  name: string;
+  age: string | number;
+  birth_date: string;
+  birth_date_convert: Date;
+  phone_number: string;
+  origin_campus_id: string;
+  room_number_id: string;
   address: string;
   origin_city: string;
   status: string;
@@ -119,7 +159,6 @@ export type PaymentAddForm = {
   billing_date_convert: Date | number;
   billing_amount: string | number;
   status: string;
-  payment_evidence: string;
-  files?: File[]; 
-  payment_file_name: string;
+  payment_evidence: File;
+  files: File[] | undefined;
 };

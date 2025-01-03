@@ -1,32 +1,36 @@
 import { useState } from 'react';
-import { GalleryAddForm } from '@interfaces/data-types';
+import { PaymentAddForm } from '@interfaces/data-types';
 import { useToast } from '@interfaces/use-toast';
-import { createGallery } from '@services/gallery';
+import { 
+  postPayment
+} from '@services/payment';
 
 export function useCreate() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  const createNewGallery = async (formData: GalleryAddForm, onSuccess?: () => void) => {
+  const createPayment = async (formData: PaymentAddForm, onSuccess?: () => void) => {
     setIsLoading(true);
 
     try {
-      const response = await createGallery(formData);
+      const response = await postPayment(formData);
       if (response.status) {
         toast({
           variant: 'success',
           title: 'Success',
-          description: `Gallery ${formData.title} successfully created!`,
+          description: response.message,
         });
         if (onSuccess) onSuccess();
       } else {
+        console.error(response);
         toast({
           variant: 'failed',
           title: 'Error',
-          description: response.message || 'An error occurred while creating the gallery.',
+          description: response.message || 'An error occurred while creating the payment.',
         });
       }
-    } catch (err) {
+   } catch (err) {
+      console.error(err);
       toast({
         variant: 'failed',
         title: 'Error',
@@ -39,6 +43,6 @@ export function useCreate() {
 
   return {
     isLoading,
-    createNewGallery,
+    createPayment,
   };
 }

@@ -3,7 +3,7 @@ import { getCookiesStore } from "@store/cookiesStore";
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
 const SatellitePrivate: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_BASE_URL,
+  baseURL: process.env.NEXT_BASE_URL_API,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -34,6 +34,7 @@ SatellitePrivate.interceptors.response.use(
       const oldToken = await getCookiesStore();
       if (oldToken) {
         const newToken = await refreshAccessToken(oldToken);
+        console.log("NEW : ",newToken);
         if (newToken) {
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return SatellitePrivate(originalRequest);

@@ -4,25 +4,24 @@ import { useState } from 'react';
 import { Button } from '@components/button';
 import CustomText from '@components/particel/custom-text';
 import DynamicCard from '@components/particel/dynamic-card';
-import { breadCrumbsGalleriesAdd, galleriesAddTitle, galleryString } from '@constant/breadcrumbs';
+import { createTitleAndBreadcrumbs, galleryString, galleryUrl } from '@constant/breadcrumbs';
 import Breadcumbs from '@ui/breadcrumbs';
 import AddGalleries from '@ui/data/galleries/add';
 import Link from 'next/link';
 import { GalleryAddForm } from '@interfaces/data-types';
-import { useCreate } from './hook';
 import { useRouter } from 'next/navigation';
+import { useQueryClient } from '../hook';
 
 export default function AddGalleriesPage() {
-  const router = useRouter(); 
+  const router = useRouter();
   const [formData, setFormData] = useState<GalleryAddForm>({
     title: '',
     type: '',
     category_id: '',
-    file: '',
+    file: new File([], 'file'),
     files: undefined,
-    file_name: '',
   });
-  const { isLoading, createNewGallery } = useCreate();
+  const { isLoading, createGallery } = useQueryClient();
 
   const handleFormSubmit = (data: GalleryAddForm) => {
     setFormData(data);
@@ -30,15 +29,16 @@ export default function AddGalleriesPage() {
 
   const handleSave = async () => {
 
-    await createNewGallery(formData, () => {
+    await createGallery(formData, () => {
       router.push('/galleries');
     });
   }
+  const breadcrumbs = createTitleAndBreadcrumbs(galleryString, galleryUrl);
 
   return (
     <>
       <div className="container max-w-screen-xl mx-auto px-4">
-        <Breadcumbs title={galleriesAddTitle} breadCrumbs={breadCrumbsGalleriesAdd} />
+        <Breadcumbs title={breadcrumbs.addTitle} breadCrumbs={breadcrumbs.breadcrumbsAdd} />
         <DynamicCard
           border={true}
           header={

@@ -22,18 +22,17 @@ export default function AddGalleries({ onSubmit }: { onSubmit: (data: GalleryAdd
       title: '',
       type: '',
       category_id: '',
+      file: undefined,
       files: undefined,
-      file: '',
-      file_name: 'null'
     },
   });
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await SatellitePrivate.get<formatMessage>('/categories');
+        const res = await SatellitePrivate.get<formatMessage<Categories[]>>('/categories');
         const response = res.data;
-        const categories : Categories[] = Array.isArray(response.data) ? response.data : [];
+        const categories =  response.data || [];
         if (response.success === true) {
           setCategories(categories);
         }
@@ -45,23 +44,13 @@ export default function AddGalleries({ onSubmit }: { onSubmit: (data: GalleryAdd
     fetchCategories();
   }, []);
 
-    const handleFormChange = (data: GalleryAddForm) => {
-        if (data.files && data.files[0]) {
-            const file = data.files[0];
-            console.log(file);
-            data.file_name = file.name;
-            const reader = new FileReader();
-
-            reader.onloadend = () => {
-                const base64Data = reader.result as string;
-                const [mimeType, base64Content] = base64Data.split(',');
-                data.file = base64Content;
-                onSubmit(data);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
+  const handleFormChange = (data: GalleryAddForm) => {
+    if (data.files && data.files[0]) {
+      const file = data.files[0];
+      data.file = file;
+    }
+    onSubmit(data);
+  };
   return (
     <div className="flex p-4 justify-between">
       <Form {...form}>
@@ -194,12 +183,16 @@ export default function AddGalleries({ onSubmit }: { onSubmit: (data: GalleryAdd
                             }
                           >
                             <File className="w-12 h-12 mb-2" />
-                            {Array.from(field.value).map((file: File, index: number) => (
-                              <div className='flex flex-col ml-2' key={index}>
-                                <span>{file.name}</span>
-                                <span className='text-muted-foreground'>{bytesToMb(file.size)}</span>
-                              </div>
-                            ))}
+                            {Array.from(field.value).map((file: File, index: number) => {
+                              return (
+                                <div className="flex flex-col ml-2" key={index}>
+                                  <span>{file.name}</span>
+                                  <span className="text-muted-foreground">
+                                    {bytesToMb(file.size)}
+                                  </span>
+                                </div>
+                              );
+                            })}
                           </div>
                         )}
                        

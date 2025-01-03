@@ -7,7 +7,19 @@ import {
     ChartColumnDecreasing,
     FileText
 } from 'lucide-react';
-import { galleriesTitle, residentsTitle } from '@constant/breadcrumbs';
+import { 
+  createTitleAndBreadcrumbs, 
+  galleryString, 
+  galleryUrl,
+  residentString, 
+  residentUrl,
+  paymentString,
+  paymentUrl 
+} from '@constant/breadcrumbs';
+
+const galleries = createTitleAndBreadcrumbs(galleryString, galleryUrl);
+const residents = createTitleAndBreadcrumbs(residentString, residentUrl);
+const payments = createTitleAndBreadcrumbs(paymentString, paymentUrl);
 
 const menuItems: Array<{
   label: string;
@@ -20,19 +32,19 @@ const menuItems: Array<{
     link: '/',
   },
   {
-    label: galleriesTitle,
+    label: galleries.indexTitle,
     icon: Images,
-    link: '/galleries',
+    link:`/${galleryUrl}`,
   },
   {
-    label: residentsTitle,
+    label: residents.indexTitle,
     icon: UserRoundPen,
-    link: '/residents',
+    link: `/${residentUrl}`,
   },
   {
-    label: 'Kelola Pembayaran',
+    label: payments.indexTitle,
     icon: WalletMinimal,
-    link: '/payments',
+    link: `/${paymentUrl}`,
   },
   {
     label: 'Grafik Spesifik',
@@ -57,56 +69,6 @@ const typeMediaGallery: RadioButtonItem[] = [
   },
 ];
 
-const originCampusResident: RadioButtonItem[] = [
-  {
-    value: 'Kampus 1',
-    name: 'Kampus 1'
-  },
-  {
-    value: 'Kampus 2',
-    name: 'Kampus 2'
-  },
-  {
-    value: 'Kampus 3',
-    name: 'Kampus 3'
-  },
-  {
-    value: 'Kampus 4',
-    name: 'Kampus 4'
-  },
-  {
-    value: 'Kampus 5',
-    name: 'Kampus 5'
-  }
-];
-
-const roomNumberResident: RadioButtonItem[] = [
-  {
-    value: '1A',
-    name: '1A'
-  },
-  {
-    value: '1B',
-    name: '1B'
-  },
-  {
-    value: '2A',
-    name: '2A'
-  },
-  {
-    value: '2B',
-    name: '2B'
-  },
-  {
-    value: '3A',
-    name: '3A'
-  },
-  {
-    value: '3B',
-    name: '3B'
-  }
-];
-
 const statusPaymentGallery: RadioButtonItem[] = [
   {
     value: 'Belum Dibayar',
@@ -118,4 +80,8 @@ const statusPaymentGallery: RadioButtonItem[] = [
   },
 ];
 
-export { menuItems, typeMediaGallery, originCampusResident, roomNumberResident, statusPaymentGallery };
+export { 
+  menuItems, 
+  typeMediaGallery, 
+  statusPaymentGallery 
+};

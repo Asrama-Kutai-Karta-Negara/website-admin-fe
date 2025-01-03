@@ -27,16 +27,15 @@ export default function AddPayments({ onSubmit }: { onSubmit: (data: PaymentAddF
       billing_date_convert: undefined,
       billing_amount: '',
       status: '',
-      files: undefined,
-      payment_evidence: '',
-      payment_file_name: ''
+      payment_evidence: undefined,
+      files: undefined
     },
   });
 
   useEffect(() => {
     const fetchResidents = async () => {
       try {
-        const res = await SatellitePrivate.get<formatMessage>(
+        const res = await SatellitePrivate.get<formatMessage<Residents[]>>(
           '/residents',{
             params: {
               sort_by: 'name',
@@ -44,7 +43,7 @@ export default function AddPayments({ onSubmit }: { onSubmit: (data: PaymentAddF
           }
         );
         const response = res.data;
-        const residents : Residents[] = Array.isArray(response.data) ? response.data : [];
+        const residents = response.data || [];
         if (response.success === true) {
           setResidents(residents);
         }
@@ -63,30 +62,16 @@ export default function AddPayments({ onSubmit }: { onSubmit: (data: PaymentAddF
     const hasChanged = 
       previousData.files !== files || 
       previousData.billing_date_convert !== billing_date_convert;
-    let success = true;
-    
     if (hasChanged) {
-      if (data.files && data.files[0]) {
-          const file = data.files[0];
-          data.payment_file_name = file.name;
-          const reader = new FileReader();
-
-          reader.onloadend = () => {
-              const base64Data = reader.result as string;
-              const [mimeType, base64Content] = base64Data.split(',');
-              data.payment_evidence = base64Content;
-              success = true;
-          };
-          reader.readAsDataURL(file);
+      if (files && files[0]) {
+        data.payment_evidence = files[0];
       }
+
       if (billing_date_convert) {
         data.billing_date = format(new Date(billing_date_convert), 'yyyy-MM-dd');
       }
     }
-    if(success){
-      console.log("data sebelum : ",data);
-      onSubmit(data);
-    }
+    onSubmit(data);
   };
 
   return (
@@ -242,69 +227,73 @@ export default function AddPayments({ onSubmit }: { onSubmit: (data: PaymentAddF
               <FormItem>
                 <FormLabel className="text-xs dark:text-white">{addPaymentForm[4].label}</FormLabel>
                   <FormControl>
-                    <div>
-                        <div>
-                          
-                          {!field.value || field.value.length === 0 ? (
-                            <>
-                            <div
-                              className="border-dashed border-2 border-gray-300 bg-background rounded-lg p-4 flex flex-col items-center justify-center text-center cursor-pointer"
-                              onDragOver={(e) => e.preventDefault()}
-                              onDrop={(e) => {
-                                e.preventDefault();
-                                field.onChange(e.dataTransfer.files);
-                                handleFormChange(form.getValues());
-                              }}
-                              onClick={() =>
-                                document.getElementById("fileUploadInput")?.click()
-                              }
-                            >
-                              <CloudUpload className="w-12 h-12 mb-2" />
-                              <p className="text-sm font-medium text-gray-500">
-                                Unggah File
-                              </p>
-                              <p className="text-xs text-gray-400">
-                                Only Support JPG, PNG, JPEG, MKV & MP4 Format, Maximum file
-                                size 5MB
-                              </p>
-                            </div>
-                            </>
-                          ) : (
-                            <div
-                              className="bg-background rounded-lg p-4 flex cursor-pointer"
-                              onDragOver={(e) => e.preventDefault()}
-                              onDrop={(e) => {
-                                e.preventDefault();
-                                field.onChange(e.dataTransfer.files);
-                                handleFormChange(form.getValues());
-                              }}
-                              onClick={() =>
-                                document.getElementById("fileUploadInput")?.click()
-                              }
-                            >
-                              <File className="w-12 h-12 mb-2" />
-                              {Array.from(field.value).map((file: File, index: number) => (
-                                <div className='flex flex-col ml-2' key={index}>
-                                  <span>{file.name}</span>
-                                  <span className='text-muted-foreground'>{bytesToMb(file.size)}</span>
-                                </div>
-                              ))}
-                            </div>
-                          )}
+                  <div>
+                      <div>
                         
-                          <input
-                            id="fileUploadInput"
-                            type="file"
-                            className="hidden"
-                            onChange={(e) => {
-                              const uploadedFiles = Array.from(e.target.files || []);
-                              field.onChange(uploadedFiles);
+                        {!field.value || field.value.length === 0 ? (
+                          <>
+                          <div
+                            className="border-dashed border-2 border-gray-300 bg-background rounded-lg p-4 flex flex-col items-center justify-center text-center cursor-pointer"
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              field.onChange(e.dataTransfer.files);
                               handleFormChange(form.getValues());
                             }}
-                          />
-                        </div>
-                    </div>
-                  </FormControl>
+                            onClick={() =>
+                              document.getElementById("fileUploadInput")?.click()
+                            }
+                          >
+                            <CloudUpload className="w-12 h-12 mb-2" />
+                            <p className="text-sm font-medium text-gray-500">
+                              Unggah File
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              Only Support JPG, PNG, JPEG Maximum file
+                              size 5MB
+                            </p>
+                          </div>
+                          </>
+                        ) : (
+                           <div
+                            className="bg-background rounded-lg p-4 flex cursor-pointer"
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              field.onChange(e.dataTransfer.files);
+                              handleFormChange(form.getValues());
+                            }}
+                            onClick={() =>
+                              document.getElementById("fileUploadInput")?.click()
+                            }
+                          >
+                            <File className="w-12 h-12 mb-2" />
+                            {Array.from(field.value).map((file: File, index: number) => {
+                              return (
+                                <div className="flex flex-col ml-2" key={index}>
+                                  <span>{file.name}</span>
+                                  <span className="text-muted-foreground">
+                                    {bytesToMb(file.size)}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                       
+                        <input
+                          id="fileUploadInput"
+                          type="file"
+                          className="hidden"
+                          onChange={(e) => {
+                            const uploadedFiles = Array.from(e.target.files || []);
+                            field.onChange(uploadedFiles);
+                            handleFormChange(form.getValues());
+                          }}
+                        />
+                      </div>
+                  </div>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

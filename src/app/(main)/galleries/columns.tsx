@@ -7,9 +7,9 @@ import { SortableHeader } from "@components/SortableHeader";
 import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
 import ProjectFile from "@ui/data-table/project-file";
 import { ProjectActions } from "@ui/data-table/project-actions";
-import { galleryString } from "@constant/breadcrumbs";
+import { galleryString, galleryUrl } from "@constant/breadcrumbs";
 
-export const columns: ColumnDef<Gallery>[] = [
+export const columns: ColumnDef<Gallery, unknown>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -107,6 +107,6 @@ export const columns: ColumnDef<Gallery>[] = [
   {
     accessorKey: "actions",
     header: "Aksi",
-    cell: ({ row }) => <ProjectActions row={row} />,
+    cell: ({ row }) => <ProjectActions row={row} path={galleryUrl}/>,
   },
 ];

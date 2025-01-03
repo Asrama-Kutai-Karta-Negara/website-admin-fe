@@ -1,20 +1,23 @@
 import { PaymentAddForm } from '@interfaces/data-types';
 import SatellitePrivate from '@services/satellite/private';
+import { AxiosError } from 'axios';
 
-export async function createPayment(formData: PaymentAddForm) {
+export async function postPayment(formData: PaymentAddForm) {
   try {
-    const payload = {
-      resident_id: formData.resident_id,
-      billing_date: formData.billing_date,
-      billing_amount: formData.billing_amount,
-      status: formData.status,
-      payment_evidence: formData.payment_evidence,
-      payment_file_name: formData.payment_file_name
-    };
-    console.log(payload);
+    const payload = new FormData();
+    payload.append("resident_id", formData.resident_id);
+    payload.append("billing_date", formData.billing_date);
+    payload.append("billing_amount", formData.billing_amount.toString());
+    payload.append("payment_evidence", formData.payment_evidence);
+    payload.append("status", formData.status);
+
     const res = await SatellitePrivate.post(
-      '/payments',
-      payload
+      '/payments', payload ,
+      {
+        headers:{
+          'Content-Type': 'multipart/form-data',
+        }
+      }
     );
 
     const response =  res.data;
@@ -23,10 +26,18 @@ export async function createPayment(formData: PaymentAddForm) {
       message: response.message,
     };
   } catch (error) {
-    console.error('Error creating :', error);
-    return {
-      status: false,
-      message: 'An unexpected error occurred.',
-    };
+    if (error instanceof AxiosError) {
+      const message = error.response?.data?.message || 'An error occurred.';
+      return {
+        status: false,
+        message: message || 'Unexpected server error.',
+      };
+    } else {
+      console.error('Unexpected error:', error);
+      return {
+        status: false,
+        message: 'An unexpected error occurred.',
+      };
+    }
   }
 }

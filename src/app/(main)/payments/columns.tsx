@@ -8,6 +8,9 @@ import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
 import { ProjectActions } from "@ui/data-table/project-actions";
 import ProjectDesignBadge from "@ui/data-table/project-design-badge";
 import ProjectFile from "@ui/data-table/project-file";
+import { paymentUrl } from "@constant/breadcrumbs";
+import { format } from "date-fns";
+import { formatCurrencyNoRp } from "@utils/format";
 
 export const columns: ColumnDef<Payments>[] = [
   {
@@ -62,7 +65,7 @@ export const columns: ColumnDef<Payments>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title="Nama" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("resident_name")} width="60" />,
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("resident_name")} width="30" />,
     enableSorting: true,
   },
   
@@ -94,7 +97,7 @@ export const columns: ColumnDef<Payments>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title= "Tanggal Tagihan"/>
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={`${row.getValue("billing_date")}`} width="30" />,
+    cell: ({ row }) => <ProjectTextOrdering name={` ${format(new Date( row.getValue("billing_date")), 'dd MMM yyyy')}`} width="20" />,
     enableSorting: true,
   },
   {
@@ -102,7 +105,7 @@ export const columns: ColumnDef<Payments>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title="Tagihan" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("billing_amount")} width="50" />,
+    cell: ({ row }) => <ProjectTextOrdering name={`${formatCurrencyNoRp(row.getValue("billing_amount"))}`} width="20" />,
     enableSorting: true,
   },
   {
@@ -116,6 +119,6 @@ export const columns: ColumnDef<Payments>[] = [
   {
     accessorKey: "actions",
     header: "Aksi",
-    cell: ({ row }) => <ProjectActions row={row} />,
+    cell: ({ row }) => <ProjectActions row={row} path={paymentUrl} />,
   },
 ];

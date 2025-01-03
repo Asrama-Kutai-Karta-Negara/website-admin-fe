@@ -7,6 +7,7 @@ import { SortableHeader } from "@components/SortableHeader";
 import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
 import { ProjectActions } from "@ui/data-table/project-actions";
 import ProjectDesignBadge from "@ui/data-table/project-design-badge";
+import { residentUrl } from "@constant/breadcrumbs";
 
 export const columns: ColumnDef<Residents>[] = [
   {
@@ -61,7 +62,7 @@ export const columns: ColumnDef<Residents>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title="Nama" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("name")} width="50" />,
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("name")} width="20" />,
     enableSorting: true,
   },
   {
@@ -69,7 +70,7 @@ export const columns: ColumnDef<Residents>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title="Umur" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={`${row.getValue("age")}`} width="30" />,
+    cell: ({ row }) => <ProjectTextOrdering name={`${row.getValue("age")}`} width="10" />,
     enableSorting: true,
   },
   {
@@ -77,7 +78,7 @@ export const columns: ColumnDef<Residents>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title="Asal Kampus" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("origin_campus")} width="50" />,
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("origin_campus")} width="20" />,
     enableSorting: true,
   },
   {
@@ -85,7 +86,7 @@ export const columns: ColumnDef<Residents>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title="No Kamar" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("room_number")} width="30" />,
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("room_number")} width="20" />,
     enableSorting: true,
   },
   {
@@ -93,12 +94,12 @@ export const columns: ColumnDef<Residents>[] = [
     header: ({ column }) => (
       <SortableHeader column={column} title="Status" />
     ),
-    cell: ({ row }) => <ProjectDesignBadge name={row.getValue("status")} width="4" />,
+    cell: ({ row }) => <ProjectDesignBadge name={row.getValue("status")} width="30" />,
     enableSorting: true,
   },
   {
     accessorKey: "actions",
     header: "Aksi",
-    cell: ({ row }) => <ProjectActions row={row} />,
+    cell: ({ row }) => <ProjectActions row={row} path={residentUrl} />,
   },
 ];

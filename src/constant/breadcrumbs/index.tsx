@@ -2,13 +2,23 @@ export const galleryString = "Media";
 export const residentString = "Penghuni";
 export const paymentString = "Pembayaran";
 
+export const galleryUrl = "galleries";
+export const residentUrl = "residents";
+export const paymentUrl = "payments";
+
 const manageString = "Kelola %s";
 const listString = "Daftar %s";
 
-const createTitleAndBreadcrumbs = (entityName: string, url: string) => {
+export const createTitleAndBreadcrumbs = (
+  entityName: string, 
+  url: string, 
+  editName: string | null = '', 
+  id: string | null = null
+) => {
   const manageEntityString = manageString.replace("%s", entityName);
   const listEntityString = listString.replace("%s", entityName);
   const addEntityTitle = `Tambah ${entityName}`;
+  const editEntityTitle = `Ubah ${entityName}`;
 
   const breadcrumbsIndex = [
     { name: manageEntityString, url: "/" },
@@ -21,35 +31,20 @@ const createTitleAndBreadcrumbs = (entityName: string, url: string) => {
     { name: addEntityTitle, url: `/${url}/add` },
   ];
 
-  return {
-    title: manageEntityString,
+   const breadcrumbsEdit = id
+    ? [
+        { name: manageEntityString, url: "/" },
+        { name: listEntityString, url: `/${url}` },
+        { name: editName || `Edit ${entityName}`, url: `/${url}/edit/${id}` },
+      ]
+    : [];
+
+   return {
+    indexTitle: manageEntityString,
     breadcrumbsIndex,
     addTitle: addEntityTitle,
     breadcrumbsAdd,
+    editTitle: editEntityTitle,
+    breadcrumbsEdit,
   };
 };
-
-export const galleries = createTitleAndBreadcrumbs(galleryString, "galleries");
-export const residents = createTitleAndBreadcrumbs(residentString, "residents");
-export const payments = createTitleAndBreadcrumbs(paymentString, "payments");
-
-export const {
-  title: galleriesTitle,
-  breadcrumbsIndex: breadCrumbsGalleriesIndex,
-  addTitle: galleriesAddTitle,
-  breadcrumbsAdd: breadCrumbsGalleriesAdd,
-} = galleries;
-
-export const {
-  title: residentsTitle,
-  breadcrumbsIndex: breadCrumbsResidentsIndex,
-  addTitle: residentsAddTitle,
-  breadcrumbsAdd: breadCrumbsResidentsAdd,
-} = residents;
-
-export const {
-  title: paymentsTitle,
-  breadcrumbsIndex: breadCrumbsPaymentsIndex,
-  addTitle: paymentsAddTitle,
-  breadcrumbsAdd: breadCrumbsPaymentsAdd,
-} = payments;

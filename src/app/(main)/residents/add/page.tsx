@@ -4,28 +4,29 @@ import { useState } from 'react';
 import { Button } from '@components/button';
 import CustomText from '@components/particel/custom-text';
 import DynamicCard from '@components/particel/dynamic-card';
-import { breadCrumbsResidentsAdd, residentsAddTitle, residentString } from '@constant/breadcrumbs';
+import { createTitleAndBreadcrumbs, residentUrl, residentString } from '@constant/breadcrumbs';
 import Breadcumbs from '@ui/breadcrumbs';
 import AddResidents from '@ui/data/residents/add';
 import Link from 'next/link';
 import { ResidentAddForm } from '@interfaces/data-types';
 import { useRouter } from 'next/navigation';
-import { useCreate } from './hook';
+import { useCreate } from '../hook';
 
 export default function AddResidentsPage() {
   const router = useRouter(); 
   const [formData, setFormData] = useState<ResidentAddForm>({
     name: '',
     age: '',
-    birth_date: new Date(),
+    birth_date_convert: new Date(),
+    birth_date: '',
     phone_number: '',
-    origin_campus:'',
-    room_number: '',
+    origin_campus_id:'',
+    room_number_id: '',
     address: '',
     origin_city: '',
     status: '',
   });
-    const { isLoading, createNewResident } = useCreate();
+    const { isLoading, createResident } = useCreate();
 
   const handleFormSubmit = (data: ResidentAddForm) => {
     setFormData(data);
@@ -33,15 +34,16 @@ export default function AddResidentsPage() {
 
   const handleSave = async () => {
 
-    await createNewResident(formData, () => {
+    await createResident(formData, () => {
       router.push('/residents');
     });
   }
 
+  const breadcrumbs = createTitleAndBreadcrumbs(residentString, residentUrl);
   return (
     <>
       <div className="container max-w-screen-xl mx-auto px-4">
-        <Breadcumbs title={residentsAddTitle} breadCrumbs={breadCrumbsResidentsAdd} />
+        <Breadcumbs title={breadcrumbs.addTitle} breadCrumbs={breadcrumbs.breadcrumbsAdd} />
         <DynamicCard
           border={true}
           header={

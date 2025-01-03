@@ -3,18 +3,18 @@
 import React, { useEffect, useState } from "react";
 import Breadcumbs from "@ui/breadcrumbs";
 import { DataTable } from '@ui/data-table';
-import { MessageResponse, Residents } from "@interfaces/data-types";
+import { MessageResponse, Resident } from "@interfaces/data-types";
 import { columns } from './columns';
 import DynamicCard from '@components/particel/dynamic-card';
 import { Button } from '@components/button';
 import { Plus, SearchIcon } from 'lucide-react';
 import { TableFooter } from '@ui/data-table/table-footer';
 import Link from "next/link";
-import { breadCrumbsResidentsIndex, residentsTitle, residentString } from "@constant/breadcrumbs";
+import { createTitleAndBreadcrumbs, residentString, residentUrl } from "@constant/breadcrumbs";
 import SatellitePrivate from "@services/satellite/private";
 
 export default function ResidentsPage() {
-  const [residents, setResidents] = useState<Residents[]>([]);
+  const [residents, setResidents] = useState<Resident[]>([]);
   const [pagination, setPagination] = useState<MessageResponse>({
     count: 1,
     current_page: 1,
@@ -40,7 +40,7 @@ export default function ResidentsPage() {
         }
       );
       const response = res.data;
-      const residents: Residents[] = Array.isArray(response.data) ? response.data : [];
+      const residents: Resident[] = Array.isArray(response.data) ? response.data : [];
       setResidents(residents);
       setPagination({
         count: response.count,
@@ -65,9 +65,10 @@ export default function ResidentsPage() {
     setCurrentPage(0);
   };
 
+  const breadcrumbs = createTitleAndBreadcrumbs(residentString, residentUrl);
   return (
     <div className='container max-w-screen-xl mx-auto px-4'>
-      <Breadcumbs title={residentsTitle} breadCrumbs={breadCrumbsResidentsIndex} />
+      <Breadcumbs title={breadcrumbs.indexTitle} breadCrumbs={breadcrumbs.breadcrumbsIndex} />
       <DynamicCard
         header={
           <div className='flex p-4 justify-between'>

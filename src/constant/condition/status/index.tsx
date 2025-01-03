@@ -14,7 +14,7 @@ const statusItems: Array<{
     colorBgDark: null,
     colorText: 'text-green',
     colorTextDark: 'text-black',
-    paddingX: '20px',
+    paddingX: '4',
     key: 'active',
     tooltipContent: null
   },
@@ -24,7 +24,7 @@ const statusItems: Array<{
     colorBgDark: null,
     colorText: 'text-gray-500',
     colorTextDark: 'text-white',
-    paddingX: '35px',
+    paddingX: '4',
     key: 'inactive',
     tooltipContent: null
   },
@@ -34,7 +34,7 @@ const statusItems: Array<{
     colorBgDark: null,
     colorText: 'text-green',
     colorTextDark: 'text-black',
-    paddingX: '35px',
+    paddingX: '12',
     key: 'Sudah Dibayar',
     tooltipContent: null
   },
@@ -44,7 +44,7 @@ const statusItems: Array<{
     colorBgDark: null,
     colorText: 'text-gray-500',
     colorTextDark: 'text-white',
-    paddingX: '45px',
+    paddingX: '12',
     key: 'Belum Dibayar',
     tooltipContent: null
   },
