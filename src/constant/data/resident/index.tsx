@@ -30,6 +30,10 @@ const addResidentForm: Array<{
     label: 'Alamat Asal Daerah',
     placeholder: 'Masukkan alamat',
   },
+  {
+    label: 'Kota Asal',
+    placeholder: '-- Pilih Kota Asal --',
+  },
 ];
 
 export { addResidentForm };

@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { ResidentAddForm, Resident } from '@interfaces/data-types';
+import { ResidentAddForm, Resident, ResidentEditForm } from '@interfaces/data-types';
 import { useToast } from '@interfaces/use-toast';
 import { 
   postResident,
-  getByIdResident, 
+  getByIdResident,
+  putResident, 
 } from '@services/resident';
 
-export function useCreate() {
+export function useQueryClient() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -64,10 +65,42 @@ export function useCreate() {
     }
   };
 
+  const updateResident = async (formData: ResidentEditForm, id: string | number, onSuccess?: () => void) => {
+    setIsLoading(true);
+
+    try {
+      const response = await putResident(formData, id);
+      if (response.status) {
+        toast({
+          variant: 'success',
+          title: 'Success',
+          description: response.message,
+        });
+        if (onSuccess) onSuccess();
+      } else {
+        console.error(response);
+        toast({
+          variant: 'failed',
+          title: 'Error',
+          description: response.message || 'An error occurred while updating the resident.',
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      toast({
+        variant: 'failed',
+        title: 'Error',
+        description: 'Something went wrong, please try again.',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     isLoading,
     createResident,
     detailResident,
-    // updateResident
+    updateResident
   };
 }

@@ -10,7 +10,7 @@ import AddPayments from '@ui/data/payments/add';
 import Link from 'next/link';
 import { PaymentAddForm } from '@interfaces/data-types';
 import { useRouter } from 'next/navigation';
-import { useCreate } from '../hook';
+import { useQueryClient } from '../hook';
 
 export default function AddPaymentsPage() {
   const router = useRouter(); 
@@ -23,7 +23,7 @@ export default function AddPaymentsPage() {
     payment_evidence: new File([], 'file'),
     files: undefined,
   });
-  const { isLoading, createPayment } = useCreate();
+  const { isLoading, createPayment } = useQueryClient();
 
   const handleFormSubmit = (data: PaymentAddForm) => {
     setFormData(data);

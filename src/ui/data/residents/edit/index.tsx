@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/form';
 import { Input } from '@components/input';
-import { formatMessage, OriginCampus, ResidentEditForm, RoomNumbers } from '@interfaces/data-types';
+import { formatMessage, OriginCampus, OriginCity, ResidentEditForm, RoomNumbers } from '@interfaces/data-types';
 import { useToast } from '@interfaces/use-toast';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@components/select';
 import { addResidentForm } from '@constant/data/resident';
@@ -27,6 +27,7 @@ export default function EditResidents({
   const { toast } = useToast();
   
   const [originCampuses, setOriginCampuses] = useState<OriginCampus[]>([]);
+  const [originCities, setOriginCities] = useState<OriginCity[]>([]);
   const [roomNumbers, setRoomNumbers] = useState<RoomNumbers[]>([]);
 
   const form = useForm<ResidentEditForm>({
@@ -39,7 +40,7 @@ export default function EditResidents({
       origin_campus_id: '',
       room_number_id: '',
       address: '',
-      origin_city: '',
+      origin_city_id: '',
     },
   });
   const [previousData, setPreviousData] = useState<ResidentEditForm>(form.getValues());
@@ -71,8 +72,22 @@ export default function EditResidents({
       }
     };
 
+    const fetchOriginCities = async () => {
+      try {
+        const res = await SatellitePrivate.get<formatMessage<OriginCity[]>>('/origin-cities');
+        const response = res.data;
+        const originCities =  response.data || [];
+        if (response.success === true) {
+          setOriginCities(originCities);
+        }
+      } catch (error) {
+        console.error('Error fetching origin campuses:', error);
+      }
+    };
+
     fetchOriginCampus();
     fetchRoomNumbers();
+    fetchOriginCities();
   }, []);
 
   useEffect(() => {
@@ -122,21 +137,6 @@ export default function EditResidents({
 
       if (birth_date_convert) {
         data.birth_date = format(new Date(birth_date_convert), 'yyyy-MM-dd');
-      }
-
-      if (address !== null && address !== data.address) {
-        if(address.includes(',')){
-          const lastCommaIndex = address.lastIndexOf(',');
-          data.address = address.slice(0, lastCommaIndex).trim(); 
-          data.origin_city = address.slice(lastCommaIndex + 1).trim(); 
-        } else {
-          toast({
-            variant: 'warning',
-            title: 'Alamat',
-            description: 'Alamat harus memiliki format yang benar dengan koma (,) untuk memisahkan kota asal!',
-          });
-          success = false;
-        }
       }
     }
     if(success){
@@ -347,7 +347,6 @@ export default function EditResidents({
             </div>
           </div>
 
-          {/* Origin City Field */}
           <FormField
             control={form.control}
             name="address"
@@ -367,6 +366,37 @@ export default function EditResidents({
                 </FormControl>
                 <FormMessage />
               </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="origin_city_id"
+            render={({ field }) => (
+              <FormItem>
+                    <FormLabel className="text-xs">{addResidentForm[7].label}</FormLabel>
+                    <FormControl>
+                      <Select value={field.value} onValueChange={(value) => {
+                        field.onChange(value);
+                        handleFormChange(form.getValues());
+                      }}>
+                        <SelectTrigger
+                          aria-label={`Origin City`}
+                          className="bg-background"
+                        >
+                          <SelectValue placeholder={addResidentForm[7].placeholder}/>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {originCities.map((item, index) => (
+                            <SelectItem value={item.id} key={index}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
             )}
           />
         </form>

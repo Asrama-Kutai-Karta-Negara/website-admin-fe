@@ -5,7 +5,7 @@ import {
   postPayment
 } from '@services/payment';
 
-export function useCreate() {
+export function useQueryClient() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 

@@ -10,13 +10,13 @@ import Link from 'next/link';
 import { ResidentEditForm } from '@interfaces/data-types';
 import { useParams, useRouter } from 'next/navigation'; 
 import EditResidents from '@ui/data/residents/edit';
-import { useCreate } from '../../hook';
+import { useQueryClient } from '../../hook';
 
 export default function EditResidentsPage() {
   const router = useRouter(); 
   const { id } = useParams(); 
   const validId = id && typeof id === 'string' ? id : ''; 
-  const { detailResident } = useCreate();
+  const { detailResident, updateResident } = useQueryClient();
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState<ResidentEditForm>({
     name: '',
@@ -70,9 +70,9 @@ export default function EditResidentsPage() {
 
   const handleSave = async () => {
     console.log(formData);
-    // await updateResident(formData, validId, () => {
-    //   router.push('/residents');
-    // });
+    await updateResident(formData, validId, () => {
+      router.push('/residents');
+    });
   }
   
   const breadcrumbs = createTitleAndBreadcrumbs(

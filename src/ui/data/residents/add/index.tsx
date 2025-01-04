@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/form';
 import { Input } from '@components/input';
-import { formatMessage, OriginCampus, ResidentAddForm, RoomNumbers } from '@interfaces/data-types';
+import { formatMessage, OriginCampus, OriginCity, ResidentAddForm, RoomNumbers } from '@interfaces/data-types';
 import { useToast } from '@interfaces/use-toast';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@components/select';
 import { addResidentForm } from '@constant/data/resident';
@@ -21,6 +21,7 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
 
   const [originCampuses, setOriginCampuses] = useState<OriginCampus[]>([]);
   const [roomNumbers, setRoomNumbers] = useState<RoomNumbers[]>([]);
+  const [originCities, setOriginCities] = useState<OriginCity[]>([]);
 
   const form = useForm<ResidentAddForm>({
     defaultValues: {
@@ -32,7 +33,7 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
       origin_campus_id: '',
       room_number_id: '',
       address: '',
-      origin_city: '',
+      origin_city_id: '',
       status: 'active',
     },
   });
@@ -64,8 +65,22 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
       }
     };
 
+    const fetchOriginCtiy = async () => {
+      try {
+        const res = await SatellitePrivate.get<formatMessage<OriginCity[]>>('/origin-cities');
+        const response = res.data;
+        const originCities =  response.data || [];
+        if (response.success === true) {
+          setOriginCities(originCities);
+        }
+      } catch (error) {
+        console.error('Error fetching origin cities:', error);
+      }
+    };
+
     fetchOriginCampus();
     fetchRoomNumbers();
+    fetchOriginCtiy();
   }, []);
   
   const [previousData, setPreviousData] = useState<ResidentAddForm>(form.getValues());
@@ -112,21 +127,7 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
       if (birth_date_convert) {
         data.birth_date = format(new Date(birth_date_convert), 'yyyy-MM-dd');
       }
-
-      if (address !== null && address !== data.address) {
-        if(address.includes(',')){
-          const lastCommaIndex = address.lastIndexOf(',');
-          data.address = address.slice(0, lastCommaIndex).trim(); 
-          data.origin_city = address.slice(lastCommaIndex + 1).trim(); 
-        } else {
-          toast({
-            variant: 'warning',
-            title: 'Alamat',
-            description: 'Alamat harus memiliki format yang benar dengan koma (,) untuk memisahkan kota asal!',
-          });
-          success = false;
-        }
-      }
+      
     }
     if(success){
       onSubmit(data);
@@ -336,7 +337,6 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
             </div>
           </div>
 
-          {/* Origin City Field */}
           <FormField
             control={form.control}
             name="address"
@@ -356,6 +356,38 @@ export default function AddResidents({ onSubmit }: { onSubmit: (data: ResidentAd
                 </FormControl>
                 <FormMessage />
               </FormItem>
+            )}
+          />
+
+          {/* Origin City Field */}
+          <FormField
+            control={form.control}
+            name="origin_city_id"
+            render={({ field }) => (
+              <FormItem>
+                    <FormLabel className="text-xs">{addResidentForm[7].label}</FormLabel>
+                    <FormControl>
+                      <Select value={field.value} onValueChange={(value) => {
+                        field.onChange(value);
+                        handleFormChange(form.getValues());
+                      }}>
+                        <SelectTrigger
+                          aria-label={`Origin City`}
+                          className="bg-background"
+                        >
+                          <SelectValue placeholder={addResidentForm[7].placeholder}/>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {originCities.map((item, index) => (
+                            <SelectItem value={item.id} key={index}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
             )}
           />
         </form>

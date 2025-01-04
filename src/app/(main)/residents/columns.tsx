@@ -82,6 +82,14 @@ export const columns: ColumnDef<Residents>[] = [
     enableSorting: true,
   },
   {
+    accessorKey: "origin_city",
+    header: ({ column }) => (
+      <SortableHeader column={column} title="Asal Kota" />
+    ),
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("origin_city")} width="20" />,
+    enableSorting: true,
+  },
+  {
     accessorKey: "room_number",
     header: ({ column }) => (
       <SortableHeader column={column} title="No Kamar" />

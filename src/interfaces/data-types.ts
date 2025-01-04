@@ -68,6 +68,12 @@ export type OriginCampus = {
   description: string;
 }& timeAt;
 
+export type OriginCity = {
+  id: string;
+  name: string;
+  description: string;
+}& timeAt;
+
 // gallery
 export type Gallery = {
   id: string;
@@ -106,6 +112,7 @@ export type Resident = {
   birth_date: string;
   address: string;
   origin_city: string;
+  origin_city_id: string;
   origin_campus: string | null;
   origin_campus_id: string;
   phone_number: string;
@@ -123,7 +130,7 @@ export type ResidentAddForm = {
   origin_campus_id: string;
   room_number_id: string;
   address: string;
-  origin_city: string;
+  origin_city_id: string;
   status: string;
 };
 
@@ -137,7 +144,7 @@ export type ResidentEditForm = {
   origin_campus_id: string;
   room_number_id: string;
   address: string;
-  origin_city: string;
+  origin_city_id: string;
   status: string;
 };
 // resident

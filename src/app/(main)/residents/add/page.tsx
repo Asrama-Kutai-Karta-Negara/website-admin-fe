@@ -10,7 +10,7 @@ import AddResidents from '@ui/data/residents/add';
 import Link from 'next/link';
 import { ResidentAddForm } from '@interfaces/data-types';
 import { useRouter } from 'next/navigation';
-import { useCreate } from '../hook';
+import { useQueryClient } from '../hook';
 
 export default function AddResidentsPage() {
   const router = useRouter(); 
@@ -26,7 +26,7 @@ export default function AddResidentsPage() {
     origin_city: '',
     status: '',
   });
-    const { isLoading, createResident } = useCreate();
+    const { isLoading, createResident } = useQueryClient();
 
   const handleFormSubmit = (data: ResidentAddForm) => {
     setFormData(data);
