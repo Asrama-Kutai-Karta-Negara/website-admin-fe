@@ -16,6 +16,7 @@ import SatellitePrivate from "@services/satellite/private";
 
 export default function GalleriesPage() {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState({
     current_page: 1,
     total_pages: 1,
@@ -46,6 +47,7 @@ export default function GalleriesPage() {
         previous_page: res.data.previous_page,
         next_page: res.data.current_page + 1,
       });
+      setIsLoading(false);
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error("Axios Error: ", error.response?.data || error.message);
@@ -76,6 +78,7 @@ export default function GalleriesPage() {
               <Button   
                 variant='outline'
                 size={null}
+                disabled={isLoading}
                 className='bg-yellow hover:bg-gold hover:text-blonde dark:text-black dark:hover:text-white border-0 p-2'
               >
                 <Plus className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all' />

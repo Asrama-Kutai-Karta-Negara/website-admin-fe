@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Breadcumbs from "@ui/breadcrumbs";
 import { DataTable } from '@ui/data-table';
-import { MessageResponse, Payments } from "@interfaces/data-types";
+import { MessageResponse, Payment } from "@interfaces/data-types";
 import { columns } from './columns';
 import DynamicCard from '@components/particel/dynamic-card';
 import { Button } from '@components/button';
@@ -14,7 +14,8 @@ import { createTitleAndBreadcrumbs, paymentString, paymentUrl, residentString } 
 import SatellitePrivate from "@services/satellite/private";
 
 export default function PaymentsPage() {
-  const [payments, setPayments] = useState<Payments[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState<MessageResponse>({
     count: 1,
     current_page: 1,
@@ -40,7 +41,7 @@ export default function PaymentsPage() {
         }
       );
       const response = res.data;
-      const payments : Payments[] = Array.isArray(response.data) ? response.data : [];
+      const payments : Payment[] = Array.isArray(response.data) ? response.data : [];
       setPayments(payments);
       setPagination({
         count: response.count,
@@ -51,6 +52,7 @@ export default function PaymentsPage() {
         message: response.message,
         data: payments
       });
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching payments:", error);
     }
@@ -77,6 +79,7 @@ export default function PaymentsPage() {
               <Button   
                 variant='outline'
                 size={null}
+                disabled={isLoading}
                 className='bg-yellow hover:bg-gold hover:text-blonde dark:text-black dark:hover:text-white border-0 p-2'
               >
                 <Plus className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all' />

@@ -80,8 +80,36 @@ const statusPaymentGallery: RadioButtonItem[] = [
   },
 ];
 
+const deleteItem: Array<{
+  label: string;
+  path: string | null;
+  key: string;
+}> = [
+  {
+    label: 'Foto/Video',
+    key: 'galleries',
+    path: 'galleries'
+  },
+  {
+    label: 'Penghuni',
+    path: 'residents',
+    key: 'residents'
+  },
+  {
+    label: 'Pembayaran',
+    path: 'payments',
+    key: 'payments'
+  },
+  {
+    label: 'Nothing',
+    path: null,
+    key: 'not-found'
+  },
+];
+
 export { 
-  menuItems, 
+  menuItems,
+  deleteItem,
   typeMediaGallery, 
-  statusPaymentGallery 
+  statusPaymentGallery
 };

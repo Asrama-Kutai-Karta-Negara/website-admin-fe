@@ -12,12 +12,30 @@ import {
 import { ProjectActionsProps } from "@interfaces/interface-items";
 import Link from "next/link";
 import { useState } from "react";
-import DeleteModal from "@ui/data/modal-delete";
+import ModalDelete from "@ui/data/modal-delete";
+import { deleteItem } from "@constant/condition/general";
+import { useQueryClient } from "./hook";
 
 export function ProjectActions<TData>({ row, path }: ProjectActionsProps<TData>) {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const id = row.getValue("id");
   const generatedEditUrl = `/${path}/edit/${id}`;
+
+  const { isLoading, deleteQuery } = useQueryClient();
+
+  const handleDelete = async () => {
+
+    const validId = id && typeof id === 'string' ? id : ''; 
+    console.log("Item to delete:", validId);
+    await deleteQuery(validId, path, () => {
+      window.location.href = path;
+    });
+    if(!isLoading){
+      setDeleteModalOpen(false);
+    }
+  };
+  const titleName = deleteItem.find(item => item.key === path) || deleteItem.find(item => item.key === 'not-found');
+
   return (
     <>
     <DropdownMenu>
@@ -47,6 +65,13 @@ export function ProjectActions<TData>({ row, path }: ProjectActionsProps<TData>)
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+    <ModalDelete
+      isOpen={isDeleteModalOpen}
+      isLoading={isLoading}
+      onClose={() => setDeleteModalOpen(false)}
+      onDelete={handleDelete}
+      titleName={titleName?.label}
+    />
     </>
   );
 }

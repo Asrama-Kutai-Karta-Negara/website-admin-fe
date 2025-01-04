@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/form';
 import { Input } from '@components/input';
-import { formatMessage, PaymentAddForm, Residents } from '@interfaces/data-types';
+import { formatMessage, PaymentAddForm, ResidentSelect } from '@interfaces/data-types';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@components/select';
 import { statusPaymentGallery } from '@constant/condition/general';
 import { Popover, PopoverContent, PopoverTrigger } from '@components/popover';
@@ -18,7 +18,7 @@ import { bytesToMb, formatCurrency } from '@utils/format';
 import { CloudUpload, File } from 'lucide-react';
 
 export default function AddPayments({ onSubmit }: { onSubmit: (data: PaymentAddForm) => void }) {
-  const [residents, setResidents] = useState<Residents[]>([]);
+  const [residents, setResidents] = useState<ResidentSelect[]>([]);
 
   const form = useForm<PaymentAddForm>({
     defaultValues: {
@@ -35,8 +35,8 @@ export default function AddPayments({ onSubmit }: { onSubmit: (data: PaymentAddF
   useEffect(() => {
     const fetchResidents = async () => {
       try {
-        const res = await SatellitePrivate.get<formatMessage<Residents[]>>(
-          '/residents',{
+        const res = await SatellitePrivate.get<formatMessage<ResidentSelect[]>>(
+          '/get-residents-index',{
             params: {
               sort_by: 'name',
             }
@@ -120,38 +120,41 @@ export default function AddPayments({ onSubmit }: { onSubmit: (data: PaymentAddF
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs">{addPaymentForm[1].label}</FormLabel>
-                      <FormControl>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "w-full justify-between font-normal",
-                                !field.value && "text-muted-foreground",
-                              )}
-                            >
-                              {field.value ? format(field.value, "dd MMMM yyyy") : <span>Pick a date</span>}
-                              <CalendarIcon className="size-4" />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0">
-                            <Calendar 
-                              mode='single'
-                              selected={field.value}
-                              onSelect={
-                                (date) => {
-                                  field.onChange(date);
-                                  handleFormChange(form.getValues());
-                                }
-                              }
-                              footer={
-                                  field.value ? `Tanggal terpilih: ${format(field.value, 'dd/M/yyyy')}` : "Pick a day."
-                              }
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      </FormControl>
+                    <FormControl>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-between font-normal",
+                              !field.value && "text-muted-foreground",
+                            )}
+                          >
+                            {field.value
+                            ? format(typeof field.value === "number" ? new Date(field.value) : field.value, "dd MMMM yyyy")
+                            : <span>Pick a date</span> }
+                            <CalendarIcon className="size-4" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar 
+                            mode='single'
+                            selected={typeof field.value === "number" ? new Date(field.value) : field.value}
+                            onSelect={(date) => {
+                              field.onChange(date);
+                              handleFormChange(form.getValues());
+                            }}
+                            footer={
+                              field.value
+                                ? `Tanggal terpilih: ${format(typeof field.value === "number" ? new Date(field.value) : field.value, 'dd/M/yyyy')}`
+                                : "Pick a day."
+                            }
+                            defaultMonth={typeof field.value === "number" ? new Date(field.value) : field.value || new Date()}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

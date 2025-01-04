@@ -27,7 +27,7 @@ export default function EditResidentsPage() {
     origin_campus_id: '',
     room_number_id: '',
     address: '',
-    origin_city: '',
+    origin_city_id: '',
     status: ''
   });
 
@@ -49,7 +49,7 @@ export default function EditResidentsPage() {
             origin_campus_id: resident.origin_campus_id,
             room_number_id: resident.room_number_id,
             address: resident.address,
-            origin_city: resident.origin_city,
+            origin_city_id: resident.origin_city_id,
             status: resident.status
           });
         }
@@ -69,7 +69,6 @@ export default function EditResidentsPage() {
   };
 
   const handleSave = async () => {
-    console.log(formData);
     await updateResident(formData, validId, () => {
       router.push('/residents');
     });
@@ -95,6 +94,7 @@ export default function EditResidentsPage() {
                   <Button
                     variant="outline"
                     size={null}
+                    disabled={isLoading}
                     className="bg-primary p-2 rounded border"
                   >
                     <span className="ml-1 ">Batal</span>
@@ -104,6 +104,7 @@ export default function EditResidentsPage() {
                   onClick={handleSave}
                   variant="outline"
                   size={null}
+                  disabled={isLoading}
                   className="bg-yellow dark:bg-blonde hover:bg-gold hover:text-blonde dark:text-black dark:hover:text-white border-0 p-2"
                 >
                   {isLoading ? (

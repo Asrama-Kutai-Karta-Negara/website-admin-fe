@@ -40,6 +40,14 @@ export interface DynamicCardProps {
   border?: boolean;
 }
 
+export interface ModalDeleteProps {
+  isOpen: boolean;
+  isLoading: boolean;
+  onClose: () => void;
+  onDelete: () => void;
+  titleName?: string;
+}
+
 export type FormState =
   | {
       errors?: {

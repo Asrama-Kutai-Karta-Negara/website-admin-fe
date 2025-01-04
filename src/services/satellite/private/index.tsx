@@ -34,7 +34,6 @@ SatellitePrivate.interceptors.response.use(
       const oldToken = await getCookiesStore();
       if (oldToken) {
         const newToken = await refreshAccessToken(oldToken);
-        console.log("NEW : ",newToken);
         if (newToken) {
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return SatellitePrivate(originalRequest);

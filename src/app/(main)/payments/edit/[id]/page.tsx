@@ -4,74 +4,80 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@components/button';
 import CustomText from '@components/particel/custom-text';
 import DynamicCard from '@components/particel/dynamic-card';
-import { createTitleAndBreadcrumbs, galleryString, galleryUrl } from '@constant/breadcrumbs';
+import { createTitleAndBreadcrumbs, paymentUrl, paymentString } from '@constant/breadcrumbs';
 import Breadcumbs from '@ui/breadcrumbs';
 import Link from 'next/link';
-import { GalleryEditForm } from '@interfaces/data-types';
+import { PaymentEditForm } from '@interfaces/data-types';
+import { useParams, useRouter } from 'next/navigation';
 import { useQueryClient } from '../../hook';
-import { useParams, useRouter } from 'next/navigation'; 
-import EditGalleries from '@ui/data/galleries/edit';
+import EditPayments from '@ui/data/payments/edit';
 
-export default function EditGalleriesPage() {
-  const router = useRouter(); 
+export default function EditPaymentsPage() {
+  const router = useRouter();
   const { id } = useParams(); 
   const validId = id && typeof id === 'string' ? id : ''; 
-  const { detailGallery, updateGallery } = useQueryClient();
+  const { detailPayment, updatePayment } = useQueryClient();
   const [isLoading, setIsLoading] = useState(true);
-  const [formData, setFormData] = useState<GalleryEditForm>({
-    title: '',
-    type: '',
-    category_id: '',
-    file: new File([], 'file'),
+
+  const [formData, setFormData] = useState<PaymentEditForm>({
+    resident_id: '',
+    resident_name: '',
+    billing_date: '',
+    billing_date_convert: new Date(),
+    billing_amount: '',
+    status: '',
+    payment_evidence: new File([], 'file'),
     files: undefined,
-    file_name: ''
   });
 
   const hasFetched = useRef(false);
-
-  useEffect(() => {
-    if (hasFetched.current) return;
-
-    const fetchGalleryDetails = async () => {
-      try {
-        const gallery = await detailGallery(validId, () => {});
-        if (gallery) {
-          setFormData({
-            title: gallery.title,
-            type: gallery.type,
-            file:  new File([], 'file'),
-            files: gallery.file_gallery ? [gallery.file_gallery] : [],
-            category_id: gallery.category_id,
-            file_name: gallery.file_name,
-          });
+  
+    useEffect(() => {
+      if (hasFetched.current) return;
+  
+      const fetchPaymentDetails = async () => {
+        try {
+          const payment = await detailPayment(validId, () => {});
+          if (payment) {
+            setFormData({
+              resident_id: payment.resident_id,
+              resident_name: payment.resident_name,
+              billing_date: payment.billing_date,
+              billing_date_convert: new Date(payment.billing_date.toString()),
+              billing_amount: payment.billing_amount,
+              status: payment.status,
+              payment_evidence:  new File([], 'file'),
+              files: payment.file_payment_evidence ? [payment.file_payment_evidence] : []
+            });
+          }
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      };
+  
+      fetchPaymentDetails();
+      hasFetched.current = true;
+    }, [validId, detailPayment]);
+  
 
-    fetchGalleryDetails();
-    hasFetched.current = true;
-  }, [validId, detailGallery]);
-
-  const handleFormSubmit = (data: GalleryEditForm) => {
+  const handleFormSubmit = (data: PaymentEditForm) => {
     setFormData(data);
   };
 
   const handleSave = async () => {
-    await updateGallery(formData, validId, () => {
-      router.push('/galleries');
+    await updatePayment(formData, validId, () => {
+      router.push('/payments');
     });
   }
-  
+
   const breadcrumbs = createTitleAndBreadcrumbs(
-    galleryString, 
-    galleryUrl, 
-    formData?.title.toLocaleUpperCase(), 
-    validId
-  );
+      paymentString, 
+      paymentUrl, 
+      formData?.resident_name.toLocaleUpperCase(), 
+      validId
+    );
   return (
     <>
       <div className="container max-w-screen-xl mx-auto px-4">
@@ -80,9 +86,9 @@ export default function EditGalleriesPage() {
           border={true}
           header={
             <div className="flex p-4 justify-between items-center">
-              <CustomText text={`Ubah Data ${galleryString}`} textSize="2xl" />
+              <CustomText text={`Ubah Data ${paymentString}`} textSize="2xl" />
               <div className="flex flex-row items-center space-x-4">
-                <Link href={'/galleries'}>
+                <Link href={'/payments'}>
                   <Button
                     variant="outline"
                     size={null}
@@ -130,7 +136,7 @@ export default function EditGalleriesPage() {
               </div>
             </div>
           }
-          body={<EditGalleries formData={formData} onSubmit={handleFormSubmit} />}
+          body={<EditPayments formData={formData} onSubmit={handleFormSubmit} />}
         />
       </div>
     </>

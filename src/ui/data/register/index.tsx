@@ -242,7 +242,7 @@ export function LoginButton() {
 
   return (
     <Button
-      aria-disabled={pending}
+      disabled={pending}
       type="submit"
       variant='outline'
       size={null}

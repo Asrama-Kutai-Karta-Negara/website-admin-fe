@@ -23,7 +23,6 @@ export default function EditResidents({
   formData: ResidentEditForm | undefined;
   onSubmit: (data: ResidentEditForm) => void 
 }) {
-  console.log("formData - props: ",formData);
   const { toast } = useToast();
   
   const [originCampuses, setOriginCampuses] = useState<OriginCampus[]>([]);

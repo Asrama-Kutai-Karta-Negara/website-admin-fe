@@ -50,6 +50,7 @@ export default function AddPaymentsPage() {
                   <Button
                     variant="outline"
                     size={null}
+                    disabled={isLoading}
                     className="bg-primary p-2 rounded border"
                   >
                     <span className="ml-1 ">Batal</span>
@@ -59,6 +60,7 @@ export default function AddPaymentsPage() {
                   onClick={handleSave}
                   variant="outline"
                   size={null}
+                  disabled={isLoading}
                   className="bg-yellow dark:bg-blonde hover:bg-gold hover:text-blonde dark:text-black dark:hover:text-white border-0 p-2"
                 >
                   {isLoading ? (

@@ -116,3 +116,30 @@ export async function putGallery(formData: GalleryEditForm, id: string | number)
     }
   }
 }
+
+export async function deleteGallery(id: string | number) {
+  try {
+    const res = await SatellitePrivate.delete<formatMessage<null>>(
+      `/galleries/${id}`
+    );
+    const response =  res.data;
+    return {
+      status: response.success,
+      message: response.message,
+    };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const message = error.response?.data?.message || 'An error occurred.';
+      return {
+        status: false,
+        message: message || 'Unexpected server error.',
+      };
+    } else {
+      console.error('Unexpected error:', error);
+      return {
+        status: false,
+        message: 'An unexpected error occurred.',
+      };
+    }
+  }
+}

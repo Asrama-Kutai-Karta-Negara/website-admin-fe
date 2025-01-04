@@ -23,7 +23,7 @@ export default function AddResidentsPage() {
     origin_campus_id:'',
     room_number_id: '',
     address: '',
-    origin_city: '',
+    origin_city_id: '',
     status: '',
   });
     const { isLoading, createResident } = useQueryClient();
@@ -54,6 +54,7 @@ export default function AddResidentsPage() {
                   <Button
                     variant="outline"
                     size={null}
+                    disabled={isLoading}
                     className="bg-primary p-2 rounded border"
                   >
                     <span className="ml-1 ">Batal</span>
@@ -63,6 +64,7 @@ export default function AddResidentsPage() {
                   onClick={handleSave}
                   variant="outline"
                   size={null}
+                  disabled={isLoading}
                   className="bg-yellow dark:bg-blonde hover:bg-gold hover:text-blonde dark:text-black dark:hover:text-white border-0 p-2"
                 >
                   {isLoading ? (

@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/checkbox";
-import { Payments } from "@interfaces/data-types";
+import { Payment } from "@interfaces/data-types";
 import { SortableHeader } from "@components/SortableHeader";
 import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
 import { ProjectActions } from "@ui/data-table/project-actions";
@@ -12,7 +12,7 @@ import { paymentUrl } from "@constant/breadcrumbs";
 import { format } from "date-fns";
 import { formatCurrencyNoRp } from "@utils/format";
 
-export const columns: ColumnDef<Payments>[] = [
+export const columns: ColumnDef<Payment>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -80,12 +80,12 @@ export const columns: ColumnDef<Payments>[] = [
       <SortableHeader column={column} title="Bukti Pembayaran" />
     ),
     cell: ({ row }) => {
-      const fileName = row.getValue<string>("payment_file_name") || "Unnamed File";
+      const fileName = row.getValue<string>("payment_file_name") || "Tidak ada file";
       const file = row.getValue<string>("payment_evidence") || "";
       
       return (
         <ProjectFile
-          name={fileName || "Unnamed File"}
+          name={fileName}
           file={file}
         />
       );

@@ -16,7 +16,6 @@ import { bytesToMb } from '@utils/format';
 
 export default function AddGalleries({ onSubmit }: { onSubmit: (data: GalleryAddForm) => void }) {
   const [categories, setCategories] = useState<Categories[]>([]);
-
   const form = useForm<GalleryAddForm>({
     defaultValues: {
       title: '',

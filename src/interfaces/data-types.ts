@@ -74,6 +74,12 @@ export type OriginCity = {
   description: string;
 }& timeAt;
 
+export type ResidentSelect = {
+  id: string;
+  name: string;
+  room_number_id: string;
+}
+
 // gallery
 export type Gallery = {
   id: string;
@@ -150,13 +156,15 @@ export type ResidentEditForm = {
 // resident
 
 // payment
-export type Payments = {
+export type Payment = {
   id: string;
   resident_id: string;
   payment_evidence: number | null;
+  file_payment_evidence: File | undefined;
+  payment_file_name: string;
   billing_date: string;
   billing_amount: string;
-  resident_name: number;
+  resident_name: string;
   status: string;
 } & timeAt;
 
@@ -167,5 +175,16 @@ export type PaymentAddForm = {
   billing_amount: string | number;
   status: string;
   payment_evidence: File;
+  files: File[] | undefined;
+};
+
+export type PaymentEditForm = {
+  resident_id: string;
+  resident_name: string;
+  billing_date: string;
+  billing_date_convert: Date | number;
+  billing_amount: string | number;
+  status: string;
+  payment_evidence: File | null;
   files: File[] | undefined;
 };

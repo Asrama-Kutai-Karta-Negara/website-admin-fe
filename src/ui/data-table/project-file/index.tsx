@@ -10,7 +10,7 @@ import { Arrow } from "@radix-ui/react-tooltip";
 import CustomText from "@components/particel/custom-text";
 import { formatShortName } from "@utils/format";
 
-const ProjectFile = ({ name, file }: { name: string; file: string }) => {
+const ProjectFile = ({ name, file }: { name: string; file: string | null }) => {
   const avatarFallback = name
     .split(" ")
     .map((n) => n[0])

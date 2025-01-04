@@ -37,6 +37,8 @@
     --honey: #fff280;
     --blonde: #fffbd5;
     --green: #4caf50;
+    --red: #df6466;
+    --red-foreground: #df6466;
 
     --radius: 0.5rem;
   }
@@ -75,6 +77,9 @@
     --honey: #fff280;
     --blonde: #ffd700;
     --green: #e6e6e6;
+
+    --red: #db7093;
+    --red-foreground: #db7093;
   }
 }
 

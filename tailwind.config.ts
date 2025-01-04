@@ -52,6 +52,10 @@ export default {
         yellow: {
           DEFAULT: "var(--yellow)",
         },
+        red: {
+          DEFAULT: "var(--red)",
+          foreground: "var(--red-foreground)",
+        },
         honey: {
           DEFAULT: "var(--honey)",
         },

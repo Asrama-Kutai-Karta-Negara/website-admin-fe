@@ -92,12 +92,12 @@ export const columns: ColumnDef<Gallery, unknown>[] = [
       <SortableHeader column={column} title={`File ${galleryString}`} />
     ),
     cell: ({ row }) => {
-      const fileName = row.getValue<string>("file_name") || "Unnamed File";
+      const fileName = row.getValue<string>("file_name") || "Tidak ada file";
       const file = row.getValue<string>("file") || "";
       
       return (
         <ProjectFile
-          name={fileName || "Unnamed File"}
+          name={fileName}
           file={file}
         />
       );
@@ -107,6 +107,6 @@ export const columns: ColumnDef<Gallery, unknown>[] = [
   {
     accessorKey: "actions",
     header: "Aksi",
-    cell: ({ row }) => <ProjectActions row={row} path={galleryUrl}/>,
+    cell: ({ row }) => <ProjectActions row={row} path={galleryUrl} />,
   },
 ];

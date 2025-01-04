@@ -2,14 +2,14 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/checkbox";
-import { Residents } from "@interfaces/data-types";
+import { Resident } from "@interfaces/data-types";
 import { SortableHeader } from "@components/SortableHeader";
 import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
 import { ProjectActions } from "@ui/data-table/project-actions";
 import ProjectDesignBadge from "@ui/data-table/project-design-badge";
 import { residentUrl } from "@constant/breadcrumbs";
 
-export const columns: ColumnDef<Residents>[] = [
+export const columns: ColumnDef<Resident>[] = [
   {
     id: "select",
     header: ({ table }) => (
