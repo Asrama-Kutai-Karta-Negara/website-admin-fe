@@ -14,7 +14,8 @@ import {
   residentString, 
   residentUrl,
   paymentString,
-  paymentUrl 
+  paymentUrl, 
+  reportUrl
 } from '@constant/breadcrumbs';
 
 const galleries = createTitleAndBreadcrumbs(galleryString, galleryUrl);
@@ -47,14 +48,9 @@ const menuItems: Array<{
     link: `/${paymentUrl}`,
   },
   {
-    label: 'Grafik Spesifik',
-    icon: ChartColumnDecreasing,
-    link: '#',
-  },
-  {
     label: 'Laporan',
     icon: FileText,
-    link: '#',
+    link: `/${reportUrl}`,
   },
 ];
 

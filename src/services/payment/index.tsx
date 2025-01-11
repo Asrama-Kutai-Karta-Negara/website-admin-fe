@@ -58,7 +58,6 @@ export async function getByIdPayment(id: string | number): Promise<formatMessage
   try {
     const res = await SatellitePrivate.get<formatMessage<Payment>>(`/payments/${id}`);
     const response = res.data;
-
     if (response.success && response.data) {
       if(response.data.payment_evidence !== null){
         try {

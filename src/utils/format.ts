@@ -1,12 +1,19 @@
 export function formatCurrency(value: string): string {
   if (!value) return "";
-  const cleanedValue = value.replace(/[^0-9]/g, ""); // Hapus karakter non-angka
+  if (value.includes('.00')) {
+    value = value.replace('.00', '');
+  }
+  const cleanedValue = value.replace(/[^0-9]/g, "");
   return "Rp " + parseInt(cleanedValue || "0").toLocaleString("id-ID", { minimumFractionDigits: 0 });
 }
 
 export function formatCurrencyNoRp(value: string): string {
   if (!value) return "";
-  const cleanedValue = value.replace(/[^0-9]/g, ""); // Hapus karakter non-angka
+  if (value.includes('.00')) {
+    value = value.replace('.00', '');
+  }
+
+  const cleanedValue = value.replace(/[^0-9]/g, "");
   return parseInt(cleanedValue || "0").toLocaleString("id-ID", { minimumFractionDigits: 0 });
 }
 

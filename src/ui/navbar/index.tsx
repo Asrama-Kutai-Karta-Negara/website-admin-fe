@@ -13,7 +13,7 @@ const Navbar = () => {
         <div className="flex space-x-10">
           <div className='flex'>
             <Link href='/'>
-              <Image src={logo} alt='Asrama Kutai Karta Negara logo' width={30} />
+              <Image src={logo} alt='Asrama Kutai Karta Negara logo' className='mr-2' width={30} />
             </Link>
             <DynamicText
               text={`ASRAMA KUTAI KARTANEGARA`} 

@@ -188,3 +188,62 @@ export type PaymentEditForm = {
   payment_evidence: File | null;
   files: File[] | undefined;
 };
+
+// report
+export type Report = {
+  id: string;
+  title: string;
+  report_evidence: string;
+  report_date: string;
+  report_amount: string;
+  report_categories: string;
+  file_report_evidence: File | undefined;
+  report_file_name: string;
+}& timeAt;
+
+export type ReportAddForm = {
+  title: string;
+  report_date: string;
+  report_date_convert: Date | number;
+  report_amount: string | number;
+  report_categories: string;
+  report_evidence: File;
+  files: File[] | undefined;
+};
+
+export type ReportEditForm = { 
+  title: string;
+  report_date: string;
+  report_date_convert: Date | number;
+  report_amount: string | number;
+  report_categories: string;
+  report_evidence: File | null;
+  files: File[] | undefined;
+};
+
+//export report
+export type ExportReportForm = {
+  range_date: string;
+  format_file: 'PDF' | 'Excel' | undefined;
+};
+
+export type GenerateReport = {
+  file_name: string;
+  file_url: string;
+};
+
+//grafik
+export type StaticData = {
+  data_active: number;
+  data_count: number;
+}
+
+export type chartIncomeData = {
+  weekly_income: number[];
+  total_income: number;
+}
+
+export type chartOutcomeData = {
+  weekly_outcome: number[];
+  total_outcome: number;
+}

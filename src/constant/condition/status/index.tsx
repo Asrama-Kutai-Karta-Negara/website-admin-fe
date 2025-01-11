@@ -14,7 +14,7 @@ const statusItems: Array<{
     colorBgDark: null,
     colorText: 'text-green',
     colorTextDark: 'text-black',
-    paddingX: '4',
+    paddingX: 'px-4',
     key: 'active',
     tooltipContent: null
   },
@@ -24,7 +24,7 @@ const statusItems: Array<{
     colorBgDark: null,
     colorText: 'text-gray-500',
     colorTextDark: 'text-white',
-    paddingX: '4',
+    paddingX: 'px-4',
     key: 'inactive',
     tooltipContent: null
   },
@@ -34,7 +34,7 @@ const statusItems: Array<{
     colorBgDark: null,
     colorText: 'text-green',
     colorTextDark: 'text-black',
-    paddingX: '12',
+    paddingX: 'px-4',
     key: 'Sudah Dibayar',
     tooltipContent: null
   },
@@ -44,8 +44,48 @@ const statusItems: Array<{
     colorBgDark: null,
     colorText: 'text-gray-500',
     colorTextDark: 'text-white',
-    paddingX: '12',
+    paddingX: 'px-4',
     key: 'Belum Dibayar',
+    tooltipContent: null
+  },
+  {
+    label: 'Pemasukan',
+    colorBg: 'bg-[#CCFFDB]',
+    colorBgDark: null,
+    colorText: 'text-green',
+    colorTextDark: 'text-black',
+    paddingX: 'px-4',
+    key: 'Pemasukan',
+    tooltipContent: null
+  },
+  {
+    label: 'Pengeluaran',
+    colorBg: ' bg-background',
+    colorBgDark: null,
+    colorText: 'text-gray-500',
+    colorTextDark: 'text-white',
+    paddingX: 'px-4',
+    key: 'Pengeluaran',
+    tooltipContent: null
+  },
+  {
+    label: 'Sudah Disinkron',
+    colorBg: 'bg-blue-200',
+    colorBgDark: null,
+    colorText: 'text-gray-500',
+    colorTextDark: 'text-black',
+    paddingX: 'px-4',
+    key: '1',
+    tooltipContent: null
+  },
+  {
+    label: 'Belum Disinkron',
+    colorBg: ' bg-background',
+    colorBgDark: null,
+    colorText: 'text-gray-500',
+    colorTextDark: 'text-white',
+    paddingX: 'px-4',
+    key: '0',
     tooltipContent: null
   },
   {
@@ -54,7 +94,7 @@ const statusItems: Array<{
     colorBgDark: null,
     colorText: 'text-black',
     colorTextDark: '',
-    paddingX: '35px',
+    paddingX: 'px-[35px]',
     key: 'not-found',
     tooltipContent: null
   },

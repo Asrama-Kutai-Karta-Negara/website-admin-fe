@@ -1,10 +1,14 @@
 export const galleryString = "Media";
 export const residentString = "Penghuni";
 export const paymentString = "Pembayaran";
+export const dashboardString = "Dashboard";
+export const reportString = "Laporan";
 
 export const galleryUrl = "galleries";
 export const residentUrl = "residents";
 export const paymentUrl = "payments";
+export const dashboardUrl = "dashboard";
+export const reportUrl = "reports";
 
 const manageString = "Kelola %s";
 const listString = "Daftar %s";
@@ -19,6 +23,13 @@ export const createTitleAndBreadcrumbs = (
   const listEntityString = listString.replace("%s", entityName);
   const addEntityTitle = `Tambah ${entityName}`;
   const editEntityTitle = `Ubah ${entityName}`;
+  
+  const mainEntityString = entityName;
+
+  const breadCrumbsMain = [
+    { name: mainEntityString, url: "/" },
+    { name: "Main", url: `/${url}` },
+  ]
 
   const breadcrumbsIndex = [
     { name: manageEntityString, url: "/" },
@@ -46,5 +57,7 @@ export const createTitleAndBreadcrumbs = (
     breadcrumbsAdd,
     editTitle: editEntityTitle,
     breadcrumbsEdit,
+    mainTitle: entityName,
+    breadCrumbsMain
   };
 };

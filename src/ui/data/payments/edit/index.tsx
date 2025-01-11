@@ -192,6 +192,7 @@ export default function EditPayments({
                         onChange={(e) => {
                           const rawValue = e.target.value.replace(/[^0-9]/g, "");
                           field.onChange(rawValue);
+                          handleFormChange(form.getValues());
                         }}
                       />
                     </FormControl>

@@ -26,7 +26,6 @@ export function ProjectActions<TData>({ row, path }: ProjectActionsProps<TData>)
   const handleDelete = async () => {
 
     const validId = id && typeof id === 'string' ? id : ''; 
-    console.log("Item to delete:", validId);
     await deleteQuery(validId, path, () => {
       window.location.href = path;
     });
@@ -49,10 +48,10 @@ export function ProjectActions<TData>({ row, path }: ProjectActionsProps<TData>)
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>
+        {/* <DropdownMenuItem>
           <Eye className="mr-2 h-4 w-4 text-blue-500 dark:text-blue-200" />
           Detail
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <Link href={generatedEditUrl}>
           <DropdownMenuItem>
             <Edit className="mr-2 h-4 w-4 text-green-500 dark:text-green-200" />

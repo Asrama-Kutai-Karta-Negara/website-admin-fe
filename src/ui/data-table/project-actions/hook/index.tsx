@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useToast } from '@interfaces/use-toast';
-import { galleryUrl, paymentUrl, residentUrl } from '@constant/breadcrumbs';
+import { galleryUrl, paymentUrl, reportUrl, residentUrl } from '@constant/breadcrumbs';
 import { deleteResident } from '@services/resident';
 import { deleteGallery } from '@services/gallery';
 import { deletePayment } from '@services/payment';
+import { deleteReport } from '@services/report';
 
 export function useQueryClient() {
   const { toast } = useToast();
@@ -27,6 +28,8 @@ export function useQueryClient() {
         response = await deleteGallery(id);
       }else if(path === paymentUrl){
         response = await deletePayment(id);
+      }else if(path === reportUrl){
+        response = await deleteReport(id);
       }
       if (response.status) {
         toast({

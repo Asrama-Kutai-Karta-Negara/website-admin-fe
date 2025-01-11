@@ -7,8 +7,7 @@ import { SortableHeader } from "@components/SortableHeader";
 import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
 import { ProjectActions } from "@ui/data-table/project-actions";
 import ProjectDesignBadge from "@ui/data-table/project-design-badge";
-import ProjectFile from "@ui/data-table/project-file";
-import { paymentUrl } from "@constant/breadcrumbs";
+import { reportUrl } from "@constant/breadcrumbs";
 import { format } from "date-fns";
 import { formatCurrencyNoRp } from "@utils/format";
 
@@ -61,72 +60,40 @@ export const columns: ColumnDef<Payment>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "resident_name",
+    accessorKey: "title",
     header: ({ column }) => (
-      <SortableHeader column={column} title="Nama" />
+      <SortableHeader column={column} title="Judul Laporan" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("resident_name")} width="30" />,
-    enableSorting: true,
-  },
-  
-  {
-    accessorKey: "payment_file_name",
-    enableHiding: true,
-    cell: () => null,
-  },
-  {
-    accessorKey: "payment_evidence",
-    header: ({ column }) => (
-      <SortableHeader column={column} title="Bukti Pembayaran" />
-    ),
-    cell: ({ row }) => {
-      const fileName = row.getValue<string>("payment_file_name") || "Tidak ada file";
-      const file = row.getValue<string>("payment_evidence") || "";
-      
-      return (
-        <ProjectFile
-          name={fileName}
-          file={file}
-        />
-      );
-    },
+    cell: ({ row }) => <ProjectTextOrdering name={row.getValue("title")} width="30" />,
     enableSorting: true,
   },
   {
-    accessorKey: "billing_date",
+    accessorKey: "report_date",
     header: ({ column }) => (
-      <SortableHeader column={column} title= "Tanggal Tagihan"/>
+      <SortableHeader column={column} title= "Tanggal"/>
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={` ${format(new Date( row.getValue("billing_date")), 'dd MMM yyyy')}`} width="20" />,
+    cell: ({ row }) => <ProjectTextOrdering name={` ${format(new Date( row.getValue("report_date")), 'dd MMM yyyy')}`} width="20" />,
     enableSorting: true,
   },
   {
-    accessorKey: "billing_amount",
+    accessorKey: "report_amount",
     header: ({ column }) => (
-      <SortableHeader column={column} title="Tagihan" />
+      <SortableHeader column={column} title="Nominal" />
     ),
-    cell: ({ row }) => <ProjectTextOrdering name={`${formatCurrencyNoRp(row.getValue("billing_amount"))}`} width="20" />,
+    cell: ({ row }) => <ProjectTextOrdering name={`${formatCurrencyNoRp(row.getValue("report_amount"))}`} width="20" />,
     enableSorting: true,
   },
   {
-    accessorKey: "status",
+    accessorKey: "report_categories",
     header: ({ column }) => (
-      <SortableHeader column={column} title="Status Payment" />
+      <SortableHeader column={column} title="Kategori" />
     ),
-    cell: ({ row }) => <ProjectDesignBadge name={row.getValue("status")} width="50" />,
-    enableSorting: true,
-  },
-  {
-    accessorKey: "move_to_report",
-    header: ({ column }) => (
-      <SortableHeader column={column} title="Status Sinkron" />
-    ),
-    cell: ({ row }) => <ProjectDesignBadge name={row.getValue("move_to_report")} width="50" />,
+    cell: ({ row }) => <ProjectDesignBadge name={row.getValue("report_categories")} width="50" />,
     enableSorting: true,
   },
   {
     accessorKey: "actions",
     header: "Aksi",
-    cell: ({ row }) => <ProjectActions row={row} path={paymentUrl} />,
+    cell: ({ row }) => <ProjectActions row={row} path={reportUrl} />,
   },
 ];

@@ -1,4 +1,5 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
+import { ExportReportForm } from "./data-types";
 
 export interface BreadCrumb  {
   name: string;
@@ -40,12 +41,33 @@ export interface DynamicCardProps {
   border?: boolean;
 }
 
+
+export interface StaticCardProps {
+  header: string;
+  data: DataStaticCardProps[];
+  isBar?: boolean;
+  body?: React.ReactNode;
+}
+
+export type DataStaticCardProps = {
+  name: string;
+  count: number;
+  fill: string;
+}
+
 export interface ModalDeleteProps {
   isOpen: boolean;
   isLoading: boolean;
   onClose: () => void;
   onDelete: () => void;
-  titleName?: string;
+  titleName: string | undefined;
+}
+
+export interface ModalExportProps {
+  isOpen: boolean;
+  isLoading: boolean;
+  onClose: () => void;
+  onExport: (data: ExportReportForm) => void;
 }
 
 export type FormState =

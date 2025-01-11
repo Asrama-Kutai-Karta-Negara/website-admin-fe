@@ -9,6 +9,10 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get("TOKEN_AUTH")?.value;
   const path = request.nextUrl.pathname;
   
+  if (path === '/') {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+  
   if (publicRoutes.includes(path)) {
     return NextResponse.next();
   }
