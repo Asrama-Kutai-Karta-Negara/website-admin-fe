@@ -16,6 +16,9 @@ import { Calendar } from "@components/calendar";
 import { cn } from "@/lib/utils";
 import { bytesToMb, formatCurrency } from '@utils/format';
 import { CloudUpload, File } from 'lucide-react';
+import { FileValidationResult } from '@interfaces/interface-items';
+import { validateFileImage, validateFileTypeImage } from '@utils/fileValidation';
+import { useToast } from '@interfaces/use-toast';
 
 export default function EditPayments({ 
   formData,
@@ -24,6 +27,7 @@ export default function EditPayments({
   formData: PaymentEditForm | undefined;
   onSubmit: (data: PaymentEditForm) => void 
 }) {
+  const { toast } = useToast();
   const [residents, setResidents] = useState<ResidentSelect[]>([]);
 
   const form = useForm<PaymentEditForm>({
@@ -74,16 +78,30 @@ export default function EditPayments({
     const hasChanged = 
       previousData.files !== files || 
       previousData.billing_date_convert !== billing_date_convert;
+    let success = true;
     if (hasChanged) {
       if (files && files[0]) {
-        data.payment_evidence = files[0];
+        const validation: FileValidationResult = validateFileImage(files[0]);
+        if (!validation.isValid) {
+          toast({
+            variant: 'failed',
+            title: 'Error',
+            description: validation.errorMessage,
+          });
+          success = false;
+        }else{
+          data.payment_evidence = files[0];
+        }
       }
 
       if (billing_date_convert) {
         data.billing_date = format(new Date(billing_date_convert), 'yyyy-MM-dd');
       }
     }
-    onSubmit(data);
+
+    if(success){
+      onSubmit(data);
+    }
   };
 
   return (
@@ -254,8 +272,17 @@ export default function EditPayments({
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={(e) => {
                               e.preventDefault();
-                              field.onChange(e.dataTransfer.files);
-                              handleFormChange(form.getValues());
+                              const files = e.dataTransfer.files;
+                              if (validateFileTypeImage(files)) {
+                                field.onChange(files);
+                                handleFormChange(form.getValues());
+                              } else {
+                                toast({
+                                  variant: 'failed',
+                                  title: 'Error',
+                                  description: 'Hanya file dengan tipe JPG, PNG, atau JPEG yang diperbolehkan.',
+                                });
+                              }
                             }}
                             onClick={() =>
                               document.getElementById("fileUploadInput")?.click()
@@ -277,8 +304,17 @@ export default function EditPayments({
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={(e) => {
                               e.preventDefault();
-                              field.onChange(e.dataTransfer.files);
-                              handleFormChange(form.getValues());
+                              const files = e.dataTransfer.files;
+                              if (validateFileTypeImage(files)) {
+                                field.onChange(files);
+                                handleFormChange(form.getValues());
+                              } else {
+                                toast({
+                                  variant: 'failed',
+                                  title: 'Error',
+                                  description: 'Hanya file dengan tipe JPG, PNG, atau JPEG yang diperbolehkan.',
+                                });
+                              }
                             }}
                             onClick={() =>
                               document.getElementById("fileUploadInput")?.click()
@@ -302,10 +338,19 @@ export default function EditPayments({
                           id="fileUploadInput"
                           type="file"
                           className="hidden"
+                          accept="image/jpeg, image/png, image/jpg"
                           onChange={(e) => {
-                            const uploadedFiles = Array.from(e.target.files || []);
-                            field.onChange(uploadedFiles);
-                            handleFormChange(form.getValues());
+                            const uploadedFiles = e.target.files;
+                            if (uploadedFiles && validateFileTypeImage(uploadedFiles)) {
+                              field.onChange(uploadedFiles);
+                              handleFormChange(form.getValues());
+                            } else {
+                              toast({
+                                variant: 'failed',
+                                title: 'Error',
+                                description: 'Hanya file dengan tipe JPG, PNG, atau JPEG yang diperbolehkan.',
+                              });
+                            }
                           }}
                         />
                       </div>

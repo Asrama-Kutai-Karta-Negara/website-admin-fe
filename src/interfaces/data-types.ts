@@ -90,23 +90,26 @@ export type Gallery = {
   file_gallery: File | undefined;
   file_name: string;
   category_name: string;
+  url: string | undefined;
 }& timeAt;
 
 export type GalleryAddForm = {
   title: string;
-  type: string;
+  type: 'Foto' | 'Video';
   category_id: string;
-  file: File;
+  file: File | undefined;
   files: File[] | undefined;
+  url: string; 
 };
 
 export type GalleryEditForm = {
   title: string;
   type: string;
   category_id: string;
-  file: File | null;
+  file: File;
   files: File[] | undefined;
   file_name: string;
+  url: string; 
 };
 // gallery
 

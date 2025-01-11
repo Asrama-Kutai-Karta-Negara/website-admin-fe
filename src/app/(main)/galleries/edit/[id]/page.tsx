@@ -24,7 +24,8 @@ export default function EditGalleriesPage() {
     category_id: '',
     file: new File([], 'file'),
     files: undefined,
-    file_name: ''
+    file_name: '',
+    url:''
   });
 
   const hasFetched = useRef(false);
@@ -43,6 +44,7 @@ export default function EditGalleriesPage() {
             files: gallery.file_gallery ? [gallery.file_gallery] : [],
             category_id: gallery.category_id,
             file_name: gallery.file_name,
+            url: gallery.url || ''
           });
         }
       } catch (error) {

@@ -2,7 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/checkbox";
-import { Payment } from "@interfaces/data-types";
 import { SortableHeader } from "@components/SortableHeader";
 import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
 import { ProjectActions } from "@ui/data-table/project-actions";
@@ -10,8 +9,10 @@ import ProjectDesignBadge from "@ui/data-table/project-design-badge";
 import { reportUrl } from "@constant/breadcrumbs";
 import { format } from "date-fns";
 import { formatCurrencyNoRp } from "@utils/format";
+import ProjectFile from "@ui/data-table/project-file";
+import { Report } from "@interfaces/data-types";
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Report>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -81,6 +82,29 @@ export const columns: ColumnDef<Payment>[] = [
       <SortableHeader column={column} title="Nominal" />
     ),
     cell: ({ row }) => <ProjectTextOrdering name={`${formatCurrencyNoRp(row.getValue("report_amount"))}`} width="20" />,
+    enableSorting: true,
+  },
+  {
+    accessorKey: "report_file_name",
+    enableHiding: true,
+    cell: () => null,
+  },
+  {
+    accessorKey: "report_evidence",
+    header: ({ column }) => (
+      <SortableHeader column={column} title="Bukti" />
+    ),
+    cell: ({ row }) => {
+      const fileName = row.getValue<string>("report_file_name") || "Tidak ada file";
+      const file = row.getValue<string>("report_evidence") || "";
+      
+      return (
+        <ProjectFile
+          name={fileName}
+          file={file}
+        />
+      );
+    },
     enableSorting: true,
   },
   {

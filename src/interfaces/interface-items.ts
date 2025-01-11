@@ -70,6 +70,11 @@ export interface ModalExportProps {
   onExport: (data: ExportReportForm) => void;
 }
 
+export interface FileValidationResult {
+  isValid: boolean;
+  errorMessage?: string;
+}
+
 export type FormState =
   | {
       errors?: {

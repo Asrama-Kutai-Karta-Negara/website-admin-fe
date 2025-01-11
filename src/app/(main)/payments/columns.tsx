@@ -68,7 +68,6 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => <ProjectTextOrdering name={row.getValue("resident_name")} width="30" />,
     enableSorting: true,
   },
-  
   {
     accessorKey: "payment_file_name",
     enableHiding: true,

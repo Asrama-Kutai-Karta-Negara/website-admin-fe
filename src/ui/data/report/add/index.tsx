@@ -15,8 +15,12 @@ import { addReportForm } from '@constant/data/report';
 import { reportString } from '@constant/breadcrumbs';
 import { bytesToMb, formatCurrency } from '@utils/format';
 import { CloudUpload, File } from 'lucide-react';
+import { validateFileImage, validateFileTypeImage } from '@utils/fileValidation';
+import { FileValidationResult } from '@interfaces/interface-items';
+import { useToast } from '@interfaces/use-toast';
 
 export default function AddReport({ onSubmit }: { onSubmit: (data: ReportAddForm) => void }) {
+  const { toast } = useToast();
   const [categories, setCategories] = useState<{ value: string; text: string }[]>([
     { value: "Pemasukan", text: 'Pemasukan' },
     { value: "Pengeluaran", text: 'Pengeluaran' }
@@ -41,6 +45,7 @@ export default function AddReport({ onSubmit }: { onSubmit: (data: ReportAddForm
     const hasChanged = 
       previousData.files !== files || 
       previousData.report_date_convert !== report_date_convert;
+    let success = true;
 
     if (hasChanged) {
       if (report_date_convert) {
@@ -48,10 +53,22 @@ export default function AddReport({ onSubmit }: { onSubmit: (data: ReportAddForm
       }
 
       if (files && files[0]) {
-        data.report_evidence = files[0];
+        const validation: FileValidationResult = validateFileImage(files[0]);
+        if (!validation.isValid) {
+          toast({
+            variant: 'failed',
+            title: 'Error',
+            description: validation.errorMessage,
+          });
+          success = false;
+        }else{
+          data.report_evidence = files[0];
+        }
       }
     }
-    onSubmit(data);
+    if(success){
+      onSubmit(data);
+    }
   };
 
   return (
@@ -200,8 +217,17 @@ export default function AddReport({ onSubmit }: { onSubmit: (data: ReportAddForm
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={(e) => {
                               e.preventDefault();
-                              field.onChange(e.dataTransfer.files);
-                              handleFormChange(form.getValues());
+                              const files = e.dataTransfer.files;
+                              if (validateFileTypeImage(files)) {
+                                field.onChange(files);
+                                handleFormChange(form.getValues());
+                              } else {
+                                toast({
+                                  variant: 'failed',
+                                  title: 'Error',
+                                  description: 'Hanya file dengan tipe JPG, PNG, atau JPEG yang diperbolehkan.',
+                                });
+                              }
                             }}
                             onClick={() =>
                               document.getElementById("fileUploadInput")?.click()
@@ -223,8 +249,17 @@ export default function AddReport({ onSubmit }: { onSubmit: (data: ReportAddForm
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={(e) => {
                               e.preventDefault();
-                              field.onChange(e.dataTransfer.files);
-                              handleFormChange(form.getValues());
+                              const files = e.dataTransfer.files;
+                              if (validateFileTypeImage(files)) {
+                                field.onChange(files);
+                                handleFormChange(form.getValues());
+                              } else {
+                                toast({
+                                  variant: 'failed',
+                                  title: 'Error',
+                                  description: 'Hanya file dengan tipe JPG, PNG, atau JPEG yang diperbolehkan.',
+                                });
+                              }
                             }}
                             onClick={() =>
                               document.getElementById("fileUploadInput")?.click()
@@ -248,10 +283,19 @@ export default function AddReport({ onSubmit }: { onSubmit: (data: ReportAddForm
                           id="fileUploadInput"
                           type="file"
                           className="hidden"
+                          accept="image/jpeg, image/png, image/jpg"
                           onChange={(e) => {
-                            const uploadedFiles = Array.from(e.target.files || []);
-                            field.onChange(uploadedFiles);
-                            handleFormChange(form.getValues());
+                            const uploadedFiles = e.target.files;
+                            if (uploadedFiles && validateFileTypeImage(uploadedFiles)) {
+                              field.onChange(uploadedFiles);
+                              handleFormChange(form.getValues());
+                            } else {
+                              toast({
+                                variant: 'failed',
+                                title: 'Error',
+                                description: 'Hanya file dengan tipe JPG, PNG, atau JPEG yang diperbolehkan.',
+                              });
+                            }
                           }}
                         />
                       </div>

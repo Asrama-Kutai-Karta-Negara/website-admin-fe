@@ -8,6 +8,8 @@ import ProjectTextOrdering from "@ui/data-table/project-text-ordering";
 import ProjectFile from "@ui/data-table/project-file";
 import { ProjectActions } from "@ui/data-table/project-actions";
 import { galleryString, galleryUrl } from "@constant/breadcrumbs";
+import { formatShortName } from "@utils/format";
+import ProjectTextTooltip from "@ui/data-table/project-text-tooltip";
 
 export const columns: ColumnDef<Gallery, unknown>[] = [
   {
@@ -87,20 +89,34 @@ export const columns: ColumnDef<Gallery, unknown>[] = [
     cell: () => null,
   },
   {
+    accessorKey: "url",
+    enableHiding: true,
+    cell: () => null,
+  },
+  {
     accessorKey: "file",
     header: ({ column }) => (
       <SortableHeader column={column} title={`File ${galleryString}`} />
     ),
     cell: ({ row }) => {
+      const url = row.getValue<string>("url") || "Tidak ada url";
+      const type = row.getValue<string>("type") || "TYPE";
       const fileName = row.getValue<string>("file_name") || "Tidak ada file";
       const file = row.getValue<string>("file") || "";
-      
-      return (
-        <ProjectFile
-          name={fileName}
-          file={file}
-        />
-      );
+      console.log(type);
+      if(type == "Video"){
+        return (
+          <ProjectTextTooltip name={url}/>
+        )
+      }else{
+        return (
+          <ProjectFile
+            name={fileName}
+            file={file}
+          />
+          
+        );
+      }
     },
     enableSorting: true,
   },

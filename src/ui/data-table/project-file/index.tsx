@@ -16,6 +16,7 @@ const ProjectFile = ({ name, file }: { name: string; file: string | null }) => {
     .map((n) => n[0])
     .join(" ")
     .toUpperCase();
+    const url = `${process.env.NEXT_BASE_URL}${file}`;
 
   const shortenedName = formatShortName(name, 5, '.');
   return (
@@ -25,7 +26,7 @@ const ProjectFile = ({ name, file }: { name: string; file: string | null }) => {
           <div className="flex items-center gap-2">
             <Avatar className="w-7 h-7 rounded-md">
               {file ? (
-                <AvatarImage src={`http://localhost:8000${file}`} />
+                <AvatarImage src={url} />
               ) : (
                 <AvatarFallback>{avatarFallback}</AvatarFallback>
               )}

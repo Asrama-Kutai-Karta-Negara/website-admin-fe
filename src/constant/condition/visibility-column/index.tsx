@@ -6,6 +6,12 @@ const columnVisibilityItems: Array<{
   },
   {
     id: "payment_file_name",
+  },
+  {
+    id: "report_file_name",
+  },
+  {
+    id: "url",
   }
 ];
 

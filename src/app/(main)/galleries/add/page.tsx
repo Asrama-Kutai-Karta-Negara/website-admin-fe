@@ -16,10 +16,11 @@ export default function AddGalleriesPage() {
   const router = useRouter();
   const [formData, setFormData] = useState<GalleryAddForm>({
     title: '',
-    type: '',
+    type: 'Foto',
     category_id: '',
     file: new File([], 'file'),
     files: undefined,
+    url: ''
   });
   const { isLoading, createGallery } = useQueryClient();
 

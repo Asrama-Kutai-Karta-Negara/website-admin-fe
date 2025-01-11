@@ -8,8 +8,13 @@ export async function postGallery(formData: GalleryAddForm) {
     payload.append("title", formData.title);
     payload.append("type", formData.type);
     payload.append("category_id", formData.category_id);
-    payload.append("file", formData.file);
-
+    if(formData.type == 'Foto' && formData.file != null){
+      payload.append("file", formData.file);
+    }
+    if(formData.type == 'Video' && formData.url != null){
+      payload.append("url", formData.url);
+    }
+    console.log(formData.file)
     const res = await SatellitePrivate.post<formatMessage<Gallery>>(
       '/galleries', payload ,
       {
@@ -46,23 +51,25 @@ export async function getByIdGallery(id: string | number): Promise<formatMessage
     const response = res.data;
 
     if (response.success && response.data) {
-      try {
-        const responseFile = await SatellitePrivate.get(`/galleries/get-file/${id}`, { responseType: 'blob' });
+      if(response.data.type === "Foto"){
+        try {
+          const responseFile = await SatellitePrivate.get(`/galleries/get-file/${id}`, { responseType: 'blob' });
 
-        if (responseFile.status === 200) {
-          const blob = responseFile.data;
-          const contentType = responseFile.headers['content-type'];
-          const fileName = response.data.file_name || 'unknown';
-          const file = new File([blob], fileName, { type: contentType });
+          if (responseFile.status === 200) {
+            const blob = responseFile.data;
+            const contentType = responseFile.headers['content-type'];
+            const fileName = response.data.file_name || 'unknown';
+            const file = new File([blob], fileName, { type: contentType });
 
-          response.data.file_gallery = file;
-        } else {
-          console.error('Failed to fetch the file. Status code:', responseFile.status);
+            response.data.file_gallery = file;
+          } else {
+            console.error('Failed to fetch the file. Status code:', responseFile.status);
+            response.data.file_gallery = undefined;
+          }
+        } catch (fileError) {
+          console.error('Error fetching gallery file:', fileError);
           response.data.file_gallery = undefined;
         }
-      } catch (fileError) {
-        console.error('Error fetching gallery file:', fileError);
-        response.data.file_gallery = undefined;
       }
     }
 
@@ -84,8 +91,11 @@ export async function putGallery(formData: GalleryEditForm, id: string | number)
     payload.append("title", formData.title);
     payload.append("type", formData.type);
     payload.append("category_id", formData.category_id);
-    if(formData.file !== null){
+    if(formData.type == 'Foto' && formData.file != null){
       payload.append("file", formData.file);
+    }
+    if(formData.type == 'Video' && formData.url != null){
+      payload.append("url", formData.url);
     }
     const res = await SatellitePrivate.post<formatMessage<null>>(
       `/galleries/${id}`, payload ,
