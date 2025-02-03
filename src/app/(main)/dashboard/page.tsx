@@ -21,13 +21,14 @@ export default function DashboardPage() {
 
   const weeklyLabels = ['Minggu Ke-1', 'Minggu Ke-2', 'Minggu Ke-3', 'Minggu Ke-4'];
 
-  const { activeResidents, kamarTerpakai, pemasukanBulanan, pengeluranBulanan } = useQueryClient();
+  const { activeResidents, kamarTerpakai, pemasukanBulanan, pengeluranBulanan, sinkronisasiPayment } = useQueryClient();
   const [isLoading, setIsLoading] = useState(true);
   const [penghuni, setPenghuni] = useState<DataStaticCardProps[]>([]);
   const [kamar, setKamar] = useState<DataStaticCardProps[]>([]);
   const [pemasukan, setPemasukan] = useState<number[]>([]);
   const [pengeluran, setPengeluran] = useState<number[]>([]);
   const [pendapatan, setPendapatan] = useState<number>(0);
+  const [sinkronisasi, setSinkronisasi] = useState<number>(0);
   const [bulan, setBulan] = useState<{ value: number; text: string }[]>([
     { value: 1, text: 'Januari' },
     { value: 2, text: 'Februari' },
@@ -128,11 +129,24 @@ export default function DashboardPage() {
       }
     };
 
+    const fetchSinkronisasi = async () => {
+      try {
+        const datas = await sinkronisasiPayment(() => {});
+        if (datas) {
+          setSinkronisasi(datas.data_active);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
     fetchActiveResident();
     fetchKamarTerpakai();
     fetchPemasukan(monthPemasukan);
     fetchPengeluaran(monthPengeluaran);
+    fetchSinkronisasi();
     hasFetched.current = true;
   }, [activeResidents, kamarTerpakai, pemasukanBulanan, pengeluranBulanan]);
 
@@ -142,8 +156,6 @@ export default function DashboardPage() {
         const datas = await pemasukanBulanan(month, () => {});
         if (datas) {
           setPemasukan(datas.weekly_income);
-          const totalPemasukan = datas.total_income;
-          setPendapatan((prevPendapatan) => prevPendapatan + totalPemasukan);
         }
       } catch (error) {
         console.error(error);
@@ -157,8 +169,6 @@ export default function DashboardPage() {
         const datas = await pengeluranBulanan(month, () => {});
         if (datas) {
           setPengeluran(datas.weekly_outcome);
-          const totalPengeluaran = datas.total_outcome;
-          setPendapatan((prevPendapatan) => prevPendapatan - totalPengeluaran);
         }
       } catch (error) {
         console.error(error);
@@ -189,7 +199,7 @@ export default function DashboardPage() {
             value={penghuni[1]?.count || 0} 
             total={penghuni[0]?.count || 0} 
             colorMain="#2280CC"
-            detailLink="#" 
+            detailLink="/residents"
           />
           <DashboardCard 
             title="Total Kamar" 
@@ -207,16 +217,16 @@ export default function DashboardPage() {
             value={formatCurrency(pendapatan.toString() || '')} 
             total="" 
             colorMain="#1DBB6C"
-            detailLink="#" 
+            detailLink="/reports"
           />
           <DashboardCard 
             title="Menunggu Validasi" 
             subtitle="Total Laporan Pembayaran"
             isBar={false}
-            value={14} 
+            value={sinkronisasi} 
             total="Total Laporan Pembayaran" 
             colorMain="#E6AA06"
-            detailLink="#" 
+            detailLink="/payments" 
           />
         </div>
         <div className="grid grid-cols-2 gap-4">

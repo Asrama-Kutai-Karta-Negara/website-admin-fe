@@ -20,12 +20,30 @@ import { deleteCookies, logout } from '@services/auth/01-auth';
 import { useToast } from '@interfaces/use-toast';
 import { formatMessage } from '@interfaces/data-types';
 import { redirect } from 'next/navigation';
+import { getCookiesStoreEmail, getCookiesStoreRole, getCookiesStoreUserName } from '@store/cookiesStore';
 
 const RightNavBar = () => {
   const { toast } = useToast();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [username, setUsername] = useState<string>('User Name');
+  const [email, setEmail] = useState<string>('email@gmail.com');
+  const [role, setRole] = useState<string>('Admin');
 
   useEffect(() => {
+
+    const fetchCookies = async () => {
+      const storedUsername = await getCookiesStoreUserName();
+      setUsername(storedUsername || 'User Name');
+
+      const storedEmail = await getCookiesStoreEmail();
+      setEmail(storedEmail || 'email@gmail.com');
+
+      const storedRole = await getCookiesStoreRole();
+      setRole(storedRole || 'Admin');
+    };
+
+    fetchCookies();
+
     const intervalId = setInterval(() => {
       setCurrentDate(new Date());
     }, 1000);
@@ -94,8 +112,8 @@ const RightNavBar = () => {
             <AvatarFallback className='text-black'>BT</AvatarFallback>
         </Avatar>
         <DynamicText
-            text={`User Name`} 
-            subText={`Admin (ID: AD00001)`}
+            text={username}
+            subText={`Admin (Email: ${email})`}
         />
         <CustomText 
           text={'Online'} 

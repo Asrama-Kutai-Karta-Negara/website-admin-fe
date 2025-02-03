@@ -13,6 +13,7 @@ export async function postResident(formData: ResidentAddForm) {
     payload.append("origin_campus_id", formData.origin_campus_id);
     payload.append("phone_number", formData.phone_number);
     payload.append("room_number_id", formData.room_number_id);
+    payload.append("status", 'active');
 
     const res = await SatellitePrivate.post<formatMessage<Resident>>(
       '/residents', payload ,

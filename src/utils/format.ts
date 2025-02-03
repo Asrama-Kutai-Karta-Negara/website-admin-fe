@@ -4,7 +4,7 @@ export function formatCurrency(value: string): string {
     value = value.replace('.00', '');
   }
   const cleanedValue = value.replace(/[^0-9]/g, "");
-  return "Rp " + parseInt(cleanedValue || "0").toLocaleString("id-ID", { minimumFractionDigits: 0 });
+  return "Rp " + parseInt(cleanedValue).toLocaleString("id-ID", { minimumFractionDigits: 0 });
 }
 
 export function formatCurrencyNoRp(value: string): string {

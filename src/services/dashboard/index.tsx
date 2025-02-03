@@ -60,3 +60,18 @@ export async function getPengeluaranBulanan(bulan: number): Promise<formatMessag
     };
   }
 }
+
+export async function getSinkronisasiPayment(): Promise<formatMessage<StaticData>> {
+  try {
+
+    const res = await SatellitePrivate.get<formatMessage<StaticData>>('/payments/grafik/sync');
+    return  res.data;
+  } catch (error) {
+    console.error('Error fetching datas:', error);
+    return {
+      success: false,
+      message: 'An unexpected error occurred.',
+      data: null,
+    };
+  }
+}

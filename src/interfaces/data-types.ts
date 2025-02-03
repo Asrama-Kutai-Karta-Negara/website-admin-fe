@@ -27,6 +27,7 @@ export type LoginRequest = {
 
 export type UserLogin = {
   name: string;
+  role: string;
   email: string;
   access_token: string;
 };

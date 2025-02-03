@@ -45,3 +45,36 @@ export async function deleteCookiesStore() {
     headers: { "Set-Cookie": serialized },
   });
 }
+
+export async function getCookiesStoreUserName() {
+  const cookieStore = await cookies();
+
+  const username = cookieStore.get("USER_NAME");
+
+  if (!username) {
+    return "User Name";
+  }
+  return username.value;
+}
+
+export async function getCookiesStoreEmail() {
+  const cookieStore = await cookies();
+
+  const email = cookieStore.get("USER_EMAIL");
+
+  if (!email) {
+    return "email@gmail.com";
+  }
+  return email.value;
+}
+
+export async function getCookiesStoreRole() {
+  const cookieStore = await cookies();
+
+  const email = cookieStore.get("USER_ROLE");
+
+  if (!email) {
+    return "email@gmail.com";
+  }
+  return email.value;
+}

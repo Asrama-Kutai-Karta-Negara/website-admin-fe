@@ -73,6 +73,27 @@ export async function login(
         sameSite: 'lax',
         path: '/',
       });
+      if(user){
+        console.log(user);
+        cookiesObj.set('USER_NAME', user.name, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'lax',
+          path: '/',
+        });
+        cookiesObj.set('USER_EMAIL', user.email, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'lax',
+          path: '/',
+        });
+        cookiesObj.set('USER_ROLE', user.role, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'lax',
+          path: '/',
+        });
+      }
       return { 
         status: true,
         message: response.message 
@@ -163,13 +184,6 @@ export async function register(
 
     const jwtToken = user?.token;
     if (jwtToken) {
-      const cookiesObj = await cookies(); 
-      cookiesObj.set('TOKEN_AUTH', jwtToken,{
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-        path: '/',
-      });
       return { 
         status: true,
         message: response.message 
